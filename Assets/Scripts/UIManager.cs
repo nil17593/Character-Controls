@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public ProgressBar pb;
     public float value;
-    public Text coinText;
-    [SerializeField] private Text woodText;
-    public Text progressText;
-    private int score = 0;
+    public TextMeshProUGUI coinText;
+    public GameObject coinPanel;
+    public GameObject coinPanel2;
+    public GameObject coinPanel3;
+    [SerializeField] private TextMeshProUGUI woodText;
+    public TextMeshProUGUI progressText;
+    private float score = 0f;
+    private int progressScore = 0;
+
     private static UIManager instance;
     public static UIManager Instance { get { return instance; } }
 
@@ -32,11 +38,10 @@ public class UIManager : MonoBehaviour
 
     public void ProgressBar()
     {
-
         pb.BarValue = value;
     }
 
-    public void IncreaseScore(int increament)
+    public void IncreaseScore(float increament)
     {
         score += increament;
         RefreshUI();
@@ -44,7 +49,11 @@ public class UIManager : MonoBehaviour
 
     private void RefreshUI()
     {
-        woodText.text =  ""+ score;
+        woodText.text =  ""+(int) score;
     }
 
+    public void UpdateProgerssBarText(int score)
+    {
+        progressText.text = "/" + progressScore;
+    }
 }

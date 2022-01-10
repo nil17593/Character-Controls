@@ -6,10 +6,10 @@ TagManager:
   tags:
   - Joystick
   - Tree
-  - parent object
   - Tree2
   - Tree3
   - Tree4
+  - ConnectingPart
   layers:
   - Default
   - TransparentFX

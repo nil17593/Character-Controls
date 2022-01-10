@@ -40,8 +40,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _Depth: -2.86
-    - _Displacement: 0.5
+    - _Depth: -3
+    - _Displacement: 0.6
     - _Normal_Strength: 0.8
     - _Smoothness: 0.2
     - _Strength: 0.2
