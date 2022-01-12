@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     public GameObject coinPanel3;
     [SerializeField] private TextMeshProUGUI woodText;
     public TextMeshProUGUI progressText;
-    private float score = 0f;
+    private int score = 0;
     private int progressScore = 0;
 
     private static UIManager instance;
@@ -41,7 +41,7 @@ public class UIManager : MonoBehaviour
         pb.BarValue = value;
     }
 
-    public void IncreaseScore(float increament)
+    public void IncreaseScore(int increament)
     {
         score += increament;
         RefreshUI();
@@ -49,7 +49,7 @@ public class UIManager : MonoBehaviour
 
     private void RefreshUI()
     {
-        woodText.text =  ""+(int) score;
+        woodText.text =  ""+ score;
     }
 
     public void UpdateProgerssBarText(int score)

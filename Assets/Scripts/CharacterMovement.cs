@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 
 public class CharacterMovement : MonoBehaviour
@@ -55,6 +56,8 @@ public class CharacterMovement : MonoBehaviour
     #endregion
 
     private Vector3 screenBounds;
+    public Image woodImage;
+    public Ease doEase = Ease.Linear;
 
     void Start()
     {
@@ -117,7 +120,7 @@ public class CharacterMovement : MonoBehaviour
     }
 
 
-    void Attack()
+    public void Attack()
     {
         animator.SetBool("Idle" ,false);    
         animator.SetBool("Attack" , true);
@@ -169,6 +172,12 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
+    IEnumerator AnimateWood()
+    {
+        yield return new WaitForSeconds(2f);
+        childprefab.transform.DOMove(this.transform.position, 2f);
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -180,26 +189,31 @@ public class CharacterMovement : MonoBehaviour
             //animator.SetBool("Idle", false);
             //animator.SetBool("Running", false);
 
-            Vector3 reduceSize = new Vector3(0f, 0.5f, 0f);
-            if (Obstacle.transform.localScale.y > 0)
-            {               
+            Vector3 reduceSize = new Vector3(0f, 1f, 0f);
+
+            if (Obstacle.transform.localScale.y > 0f)
+            {
+                //Obstacle.transform.DOShakePosition(1f, 1f, 1);
                 Obstacle.transform.localScale -= reduceSize;
+                Obstacle.transform.DOShakeRotation(1f, 5f, 3, 20f);
                 if (Obstacle.transform.localScale.y < 4f)
                 {
-                    childprefab = Instantiate(woodPrefab, woodInstantiateArea.transform.position, Quaternion.identity) as GameObject;
-                    childprefab.transform.parent = this.transform;  // GameObject.FindGameObjectWithTag("parent object").transform;
+                    childprefab = Instantiate(woodPrefab,new Vector3(Obstacle.transform.position.x,Obstacle.transform.position.y+5f,Obstacle.transform.position.z), Quaternion.identity) as GameObject;
+                    childprefab.transform.DOMove(woodInstantiateArea.transform.position, 0.4f);
                     childprefab.transform.rotation = woodInstantiateArea.transform.rotation;
+                    childprefab.transform.parent = this.transform;  // GameObject.FindGameObjectWithTag("parent object").transform;
+
                     count += 1;
                     //childprefab.transform.Rotation = Vector3(Quaternion.identity);
                 }
             }
-            if (Obstacle.transform.localScale.y < 6)
+            if (Obstacle.transform.localScale.y < 6f)
             {
-                UIManager.Instance.IncreaseScore(0.1f);
+                UIManager.Instance.IncreaseScore(1);
             }
-            if (Obstacle.transform.localScale.y < 4)
+            if (Obstacle.transform.localScale.y < 4f)
             {
-                UIManager.Instance.value += 0.5f;
+                UIManager.Instance.value += 1;
                 animator.SetBool("Attack", false);
                 animator.SetBool("Idle", true);
             }
@@ -207,7 +221,7 @@ public class CharacterMovement : MonoBehaviour
             //UIManager.Instance.progressText = UIManager.Instance.pb.BarValue;
         }
 
-        else if (other.gameObject.CompareTag("Tree2") && Obstacle2.transform.localScale.y > 4f)
+        else if (other.gameObject.CompareTag("Tree2") && Obstacle2.transform.localScale.y > 3f)
         {
             Attack();
             //animator.SetBool("Idle", false);
@@ -217,21 +231,24 @@ public class CharacterMovement : MonoBehaviour
             if (Obstacle2.transform.localScale.y > 0)
             {
                 Obstacle2.transform.localScale -= reduceSize;
-                if (Obstacle2.transform.localScale.y < 5f)
+                Obstacle.transform.DOShakeRotation(1f, 5f, 3, 20f);
+                if (Obstacle2.transform.localScale.y < 4f)
                 {
-                    childprefab = Instantiate(woodPrefab, woodInstantiateArea2.transform.position, Quaternion.identity) as GameObject;
-                    childprefab.transform.parent = this.transform; // GameObject.FindGameObjectWithTag("parent object").transform;
+                    childprefab = Instantiate(woodPrefab, new Vector3(Obstacle2.transform.position.x, Obstacle2.transform.position.y + 5f, Obstacle2.transform.position.z), Quaternion.identity) as GameObject;
+                    childprefab.transform.DOMove(woodInstantiateArea2.transform.position, 0.4f);
+                    // GameObject.FindGameObjectWithTag("parent object").transform;
                     childprefab.transform.rotation = woodInstantiateArea2.transform.rotation;
+                     childprefab.transform.parent = this.transform; 
                     count += 1;
                 }
             }
-            if (Obstacle2.transform.localScale.y < 14)
+            if (Obstacle2.transform.localScale.y < 6f)
             {
-                UIManager.Instance.IncreaseScore(0.1f);
+                UIManager.Instance.IncreaseScore(1);
             }
-            if (Obstacle2.transform.localScale.y < 5)
+            if (Obstacle2.transform.localScale.y < 4f)
             {
-                UIManager.Instance.value += 0.5f;
+                UIManager.Instance.value += 1f;
                 animator.SetBool("Attack", false);
                 animator.SetBool("Idle", true);
             }
@@ -239,7 +256,7 @@ public class CharacterMovement : MonoBehaviour
             //UIManager.Instance.progressText = UIManager.Instance.pb.BarValue;
         }
 
-        else if (other.gameObject.CompareTag("Tree3") && Obstacle3.transform.localScale.y > 4f)
+        else if (other.gameObject.CompareTag("Tree3") && Obstacle3.transform.localScale.y > 3f)
         {
             Attack();
             //animator.SetBool("Idle", false);
@@ -249,21 +266,23 @@ public class CharacterMovement : MonoBehaviour
             if (Obstacle3.transform.localScale.y > 0)
             {
                 Obstacle3.transform.localScale -= reduceSize;
-                if (Obstacle3.transform.localScale.y < 5f)
+                Obstacle.transform.DOShakeRotation(1f, 5f, 3, 20f);
+                if (Obstacle3.transform.localScale.y < 4f)
                 {
-                    childprefab = Instantiate(woodPrefab, woodInstantiateArea3.transform.position, Quaternion.identity) as GameObject;
+                    childprefab = Instantiate(woodPrefab, new Vector3(Obstacle3.transform.position.x, Obstacle3.transform.position.y + 5f, Obstacle3.transform.position.z), Quaternion.identity) as GameObject;
+                    childprefab.transform.DOMove(woodInstantiateArea3.transform.position, 0.4f);
                     childprefab.transform.parent = this.transform; // GameObject.FindGameObjectWithTag("parent object").transform;
                     childprefab.transform.rotation = woodInstantiateArea3.transform.rotation;
                     count += 1;
                 }
             }
-            if (Obstacle3.transform.localScale.y < 14)
+            if (Obstacle3.transform.localScale.y < 6f)
             {
-                UIManager.Instance.IncreaseScore(0.1f);
+                UIManager.Instance.IncreaseScore(1);
             }
-            if (Obstacle3.transform.localScale.y < 5)
+            if (Obstacle3.transform.localScale.y < 4f)
             {
-                UIManager.Instance.value += 0.5f;
+                UIManager.Instance.value += 1f;
                 animator.SetBool("Attack", false);
                 animator.SetBool("Idle", true);
             }
@@ -271,7 +290,7 @@ public class CharacterMovement : MonoBehaviour
             //UIManager.Instance.progressText = UIManager.Instance.pb.BarValue;
         }
 
-        else if (other.gameObject.CompareTag("Tree4") && Obstacle4.transform.localScale.y > 4f)
+        else if (other.gameObject.CompareTag("Tree4") && Obstacle4.transform.localScale.y > 3f)
         {
             Attack();
             //animator.SetBool("Idle", false);
@@ -281,21 +300,26 @@ public class CharacterMovement : MonoBehaviour
             if (Obstacle4.transform.localScale.y > 0)
             {
                 Obstacle4.transform.localScale -= reduceSize;
-                if (Obstacle4.transform.localScale.y < 5f)
+                Obstacle.transform.DOShakeRotation(1f, 5f, 3, 20f);
+                if (Obstacle4.transform.localScale.y < 4f)
                 {
-                    childprefab = Instantiate(woodPrefab, woodInstantiateArea4.transform.position, Quaternion.identity) as GameObject;
-                    childprefab.transform.parent = this.transform;// GameObject.FindGameObjectWithTag("parent object").transform;
-                    childprefab.transform.rotation = woodInstantiateArea4.transform.rotation;
+                    for (int i = 0; i < 4; i++)
+                    {
+                        childprefab = Instantiate(woodPrefab, new Vector3(Obstacle4.transform.position.x, Obstacle4.transform.position.y + 5f, Obstacle4.transform.position.z), Quaternion.identity) as GameObject;
+                        childprefab.transform.DOMove(woodInstantiateArea4.transform.position, 0.1f);
+                        childprefab.transform.parent = this.transform;// GameObject.FindGameObjectWithTag("parent object").transform;
+                        childprefab.transform.rotation = woodInstantiateArea4.transform.rotation;
+                    }
                     count += 1;
                 }
             }
-            if (Obstacle4.transform.localScale.y < 14)
+            if (Obstacle4.transform.localScale.y < 6f)
             {
-                UIManager.Instance.IncreaseScore(0.1f);
+                UIManager.Instance.IncreaseScore(1);
             }
-            if (Obstacle4.transform.localScale.y < 5)
+            if (Obstacle4.transform.localScale.y < 4f)
             {
-                UIManager.Instance.value += 0.5f;
+                UIManager.Instance.value += 1f;
                 animator.SetBool("Attack", false);
                 animator.SetBool("Idle", true);
             }
@@ -313,18 +337,18 @@ public class CharacterMovement : MonoBehaviour
             animator.SetBool("Idle", false);
             animator.SetBool("Running", true);
         }
-        //else
-        //{
-        //    //animator.SetBool("Idle", true);
-        //    //animator.SetBool("Running", false);
-        //}
+        else
+        {
+            animator.SetBool("Idle", true);
+            animator.SetBool("Running", false);
+        }
         //animator.SetBool("Idle", true);
         //animator.SetBool("Attack", false);
     }
     
     IEnumerator UnlockLand()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         connectingPart.SetActive(false);
         land.SetActive(true);
         //MeshRenderer.Instantiate(land, land.transform.position,Quaternion.identity);
@@ -332,21 +356,21 @@ public class CharacterMovement : MonoBehaviour
 
     IEnumerator UnlockSecondLand()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         connectingPart2.SetActive(false);
         land2.SetActive(true);
     }
 
     IEnumerator UnlockThirdLand()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         connectingPart3.SetActive(false);
         land3.SetActive(true);
     }
 
     IEnumerator UnloadWoods()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
         Destroy(childprefab);
         //woodPrefab.transform.Do(4f, 3f, 5f);
         
@@ -355,6 +379,21 @@ public class CharacterMovement : MonoBehaviour
         //childprefab.transform.parent = woodsellArea.transform;
     }
 
+
+    //IEnumerator GrowTree(GameObject tree)
+    //{
+    //    yield return new WaitForSeconds(5f);
+    //    Vector3 increase = new Vector3(tree.transform.localScale.x, tree.transform.localScale.y + 1, tree.transform.localScale.z);
+
+    //    if (tree.transform.localScale.y < 13)
+    //    {
+    //        tree.transform.localScale += increase;
+    //    }
+    //    else
+    //    {
+    //        tree.transform.localScale=new Vector3(tree.transform.localScale.x,tree.transform.localScale.y,tree.transform.localScale.z);
+    //    }
+    //}
  
 }
  
