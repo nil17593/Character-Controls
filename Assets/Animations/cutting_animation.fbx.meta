@@ -25,8 +25,21 @@ ModelImporter:
       has import animation warnings that might lower retargeting quality:\nNote:
       Activate translation DOF on avatar to improve retargeting quality.\n\t'mixamorig:Spine'
       has translation animation that will be discarded.\n"
-    animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'Armature|Armature|Armature|ArmatureAction|Armature|ArmatureAction':\n\tLeftLowerLeg
+      average position error 1.6 mm and maximum position error 12.8 mm at time 0:
+      1 (4.2%) Frame 1\n\tRightLowerLeg average position error 6.2 mm and maximum
+      position error 12.8 mm at time 0:11 (45.8%) Frame 11\n\tLeftUpperArm average
+      position error 17.0 mm and maximum position error 25.6 mm at time 0: 5 (20.8%)
+      Frame 5\n\tLeftLowerArm average position error 17.0 mm and maximum position
+      error 25.7 mm at time 0: 5 (20.8%) Frame 5\n\tLeftHand average position error
+      17.0 mm and maximum position error 25.6 mm at time 0: 5 (20.8%) Frame 5\n\tRightUpperArm
+      average position error 17.0 mm and maximum position error 25.6 mm at time 0:
+      5 (20.8%) Frame 5\n\tRightLowerArm average position error 17.9 mm and maximum
+      position error 25.9 mm at time 0: 8 (33.3%) Frame 8\n\tRightHand average position
+      error 17.0 mm and maximum position error 25.6 mm at time 0: 5 (20.8%) Frame
+      5\n\tHead average position error 17.0 mm and maximum position error 25.6 mm
+      at time 0: 5 (20.8%) Frame 5\n"
+    animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
     animationCompression: 3
@@ -80,7 +93,7 @@ ModelImporter:
     importLights: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1

@@ -10,6 +10,7 @@ TagManager:
   - Tree3
   - Tree4
   - ConnectingPart
+  - Axe
   layers:
   - Default
   - TransparentFX

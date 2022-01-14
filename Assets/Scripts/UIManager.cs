@@ -36,6 +36,7 @@ public class UIManager : MonoBehaviour
         RefreshUI();
     }
 
+
     public void ProgressBar()
     {
         pb.BarValue = value;
