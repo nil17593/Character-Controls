@@ -1,39 +1,47 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 
 public class AxeController : MonoBehaviour
 {
-    //private TreeController treeController;
+    private TreeController treeController;
+    public float range;
 
 
-    //private void OnCollisionEnter(Collision collision)
+    //private void FixedUpdate()
     //{
-    //    Debug.Log(collision.gameObject.name);
-    //    if (collision.gameObject.GetComponent<TreeController>() != null)
-    //    {
-    //        treeController.ReduceSize();
-    //    }
-    //}
-  
-  
-
-    //private void Update()
-    //{
-    //    float dist = Vector3.Distance(this.transform.position, TreeController.Instance.gameObject.transform.position);
-    //    Debug.Log(dist);
-    //    if (dist < 3f)
-    //    {
-
-    //        TreeController.Instance.ReduceSize();
-    //    }
+    //    //CheckIfRayCastHit();
     //}
 
-    //private void OnCollisionEnter(Collision collision)
+    //void CheckIfRayCastHit()
     //{
-    //    if (collision.gameObject.GetComponent<TreeController>() != null)
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(transform.position,Vector3.up, out hit,range))
     //    {
-    //        TreeController.Instance.ReduceSize();
+    //        Debug.DrawRay(transform.position,Vector3.up, Color.red);
+    //        //Debug.Log(hit.collider.gameObject.name);
+    //        TreeController tree = hit.transform.GetComponent<TreeController>();
+    //        if (tree != null)
+    //        {
+    //            tree.ReduceSize();
+    //        }
+           
+    //        //print(hit.collider.gameObject.name + "has been destroyed!");
+    //        //Destroy(hit.collider.gameObject);
     //    }
     //}
+
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        TreeController tree = other.transform.GetComponent<TreeController>();
+        //Debug.Log(other.gameObject.name);
+        if (tree != null)
+        {
+            tree.ReduceSize();
+        }
+    }
+
+
+
 }
