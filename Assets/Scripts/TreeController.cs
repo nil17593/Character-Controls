@@ -15,8 +15,8 @@ public class TreeController : MonoBehaviour
     #region Collected wood 
     [Header("Collected wood by player")]
     public GameObject woodInstantiateArea;
-    public Transform woodInstantiateArea2;
-    private List<GameObject> woodList = new List<GameObject>();
+    public GameObject woodInstantiateArea2;
+    public Transform target;
     #endregion
     private static TreeController instance;
     public static TreeController Instance { get { return instance; } }
@@ -36,77 +36,89 @@ public class TreeController : MonoBehaviour
 
     public void ReduceSize()
     {
-        Vector3 reduceSize = new Vector3(0f, 1f, 0f);
-        if (this.transform.localScale.y >= 1f)// && time > Time.time)
+        Vector3 reduceSize = new Vector3(0f, 0.1f, 0f);
+        if (this.transform.localScale.y >= 0f)
         {
             this.transform.localScale -= reduceSize;
 
             if (logCreate == true)
             {
                 DoAnimateWoods();
-                CollectWoods();              
             }
         }
-        Debug.Log(woodList.Count);
     }
 
     void DoAnimateWoods()
     {
         GameObject wood = Instantiate(woodPrefab);
+        GameObject wood2 = Instantiate(woodPrefab);
         wood.gameObject.transform.position = this.transform.position + new Vector3(0f, -2f, 0f);
-        //wood.gameObject.transform.DOLocalMove(woodInstantiateArea.gameObject.transform.position, 1f);//.SetEase(Ease.InFlash);
+        wood2.gameObject.transform.position = this.transform.position + new Vector3(0f, -2f, 0f);
 
-        //need to refine it
         wood.gameObject.transform.DOLocalJump(
-            endValue: new Vector3(transform.position.x-2f, 1f, 2f),
-            jumpPower: 15,
+            endValue: wood.transform.position + new Vector3(2f, 2f, 1.5f),
+            jumpPower: 13f,
             numJumps: 1,
-            duration: 0.5f).SetEase(Ease.InOutSine);
-        //till this.
-        logCreate = false;
-        StartCoroutine(DestroyWood(wood));
+            duration: 1f).SetEase(Ease.OutBack).OnComplete(()=> {
+                StartCoroutine(DestroyWood(wood));
+                CollectWoods();
+    });
+
+        wood2.gameObject.transform.DOLocalJump(
+           endValue: wood2.transform.position + new Vector3(-2f, 2f, 1.5f),
+           jumpPower: 13f,
+           numJumps: 1,
+           duration: 1f).SetEase(Ease.OutBack).OnComplete(() =>
+           {
+               StartCoroutine(DestroyWood(wood2));
+               CollectWoods();
+           });
+           logCreate = false;   
     }
+
 
     void CollectWoods()
     {
-        GameObject go = Instantiate(woodPrefab2, woodInstantiateArea.transform);
-        woodList.Add(go);
-        Debug.Log(go.transform.position);
-        if (woodList.Count >= 5)
+        GameObject go = Instantiate(woodPrefab2);
+        WoodCollecter.woodCount++;
+        WoodCollecter.woodList.Add(WoodCollecter.woodCount);
+        //Debug.Log(WoodCollecter.woodCount) ;
+
+        if (WoodCollecter.woodList.Count <= 8)
         {
-            Debug.Log("hai");
+            go.transform.position = woodInstantiateArea.transform.position;
+            go.transform.rotation = woodInstantiateArea.transform.rotation;
+            go.transform.SetParent(woodInstantiateArea.transform);
+            Vector3 tempPos = woodInstantiateArea.transform.position;
+            tempPos.y += height;
+            go.gameObject.transform.position = tempPos;
+            height += 0.7f;
+            UIManager.Instance.value += 1;
+            UIManager.Instance.pb.BarValue += 0.5f;
+            UIManager.Instance.IncreaseScore(1);
+        }
+        //else if(WoodCollecter.woodList.Count >= 22)
+        //{
+        //    go.transform.position = woodInstantiateArea2.transform.position;
+        //    go.transform.rotation = woodInstantiateArea2.transform.rotation;
+        //    go.transform.SetParent(woodInstantiateArea2.transform);
+        //    UIManager.Instance.value += 1;
+        //    UIManager.Instance.pb.BarValue += 0.5f;
+        //    UIManager.Instance.IncreaseScore(1);
+        //}
+        else
+        {
             go.transform.position = woodInstantiateArea2.transform.position;
             go.transform.rotation = woodInstantiateArea2.transform.rotation;
             go.transform.SetParent(woodInstantiateArea2.transform);
-            Vector3 temp = woodInstantiateArea2.transform.position+new Vector3(0f,-2f,0f);
+            Vector3 temp = woodInstantiateArea2.transform.position;// + new Vector3(0f, -2f, 0f);
             temp.y += height;
             go.gameObject.transform.position = temp;
-            height += 0.5f;
+            height += 0.6f;
             UIManager.Instance.value += 1;
             UIManager.Instance.pb.BarValue += 0.5f;
             UIManager.Instance.IncreaseScore(1);
         }
-        else
-        {
-            go.transform.rotation = woodInstantiateArea.transform.rotation;
-            go.transform.SetParent(woodInstantiateArea.transform);
-            Vector3 tempPos = woodInstantiateArea.transform.localPosition;
-            tempPos.x += height;
-            go.gameObject.transform.localPosition = tempPos;
-            height += 0.5f;
-            UIManager.Instance.value += 1;
-            UIManager.Instance.pb.BarValue += 0.5f;
-            UIManager.Instance.IncreaseScore(1);
-        }
-    }
-
-
-    public void SellWood()
-    {
-        for (int i = woodList.Count; i >= 0; i--)
-        {
-            woodList.RemoveAt(i);
-            Destroy(woodPrefab);
-        }
+       //Debug.Log(WoodCollecter.woodList.Count);
     }
 }

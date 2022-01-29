@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 
 
-
 public class CharacterMovement : MonoBehaviour
 {
     #region Character Settings
@@ -33,6 +32,7 @@ public class CharacterMovement : MonoBehaviour
     private CameraController cameraController;
     private AxeController axeController;
     private TreeController treeController;
+    public ProgressBar progressBar;
 
     void Start()
     {
@@ -47,13 +47,13 @@ public class CharacterMovement : MonoBehaviour
         CoinPanelOnOff();
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("tr"))
-        {
-            treeController.SellWood();
-        }
-    }
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("tr"))
+    //    {
+    //        treeController.SellWood();
+    //    }
+    //}
     private void Movement()
     {
         rb.velocity = new Vector3(fixedJoystick.Horizontal * movementSpeed, rb.velocity.y, fixedJoystick.Vertical * movementSpeed);
@@ -76,6 +76,7 @@ public class CharacterMovement : MonoBehaviour
         animator.SetBool("Idle" ,false);
         animator.SetBool("Running", false);
         animator.SetBool("Attack" , true);
+        //transform.DORotate(treeController.transform.position,0.3f,RotateMode.Fast);
     }
 
     public void CoinPanelOnOff()
@@ -115,12 +116,12 @@ public class CharacterMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject == connectingPart && UIManager.Instance.score > 1)
-        {
-            StartCoroutine(UnlockLand());  
-        }
+        //if (collision.gameObject == connectingPart && UIManager.Instance.score > 1)
+        //{
+        //    StartCoroutine(UnlockLand());  
+        //}
 
-        else if (collision.gameObject == connectingPart3 && UIManager.Instance.score > 2)
+        if (collision.gameObject == connectingPart3 && UIManager.Instance.score > 2)
         {
             StartCoroutine(UnlockThirdLand());
         }
@@ -161,18 +162,21 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    IEnumerator UnlockLand()
-    {
-        yield return new WaitForSeconds(1f);
-        connectingPart.SetActive(false);
-        land.SetActive(true);
-    }
+    //IEnumerator UnlockLand()
+    //{
+    //    yield return new WaitForSeconds(1f);
+    //    progressBar.BarValue = 100f;
+    //    connectingPart.SetActive(false);
+    //    land.SetActive(true);
+
+    //}
 
     IEnumerator UnlockSecondLand()
     {
         yield return new WaitForSeconds(1f);
         connectingPart2.SetActive(false);
         land2.SetActive(true);
+        progressBar.BarValue = 100f * Time.time;
     }
 
     IEnumerator UnlockThirdLand()
@@ -180,6 +184,7 @@ public class CharacterMovement : MonoBehaviour
         yield return new WaitForSeconds(1f);
         connectingPart3.SetActive(false);
         land3.SetActive(true);
+        progressBar.BarValue = 100f;
     }
 
     IEnumerator UnloadWoods()
