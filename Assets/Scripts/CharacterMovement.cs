@@ -116,10 +116,10 @@ public class CharacterMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //if (collision.gameObject == connectingPart && UIManager.Instance.score > 1)
-        //{
-        //    StartCoroutine(UnlockLand());  
-        //}
+        if (collision.gameObject == connectingPart && UIManager.Instance.score > 1)
+        {
+            StartCoroutine(UnlockLand());
+        }
 
         if (collision.gameObject == connectingPart3 && UIManager.Instance.score > 2)
         {
@@ -138,15 +138,15 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
-    void OnTriggerStay(Collider collider)
+    void OnCollisionStay(Collision collision)
     {
-        if (collider.gameObject.CompareTag("Tree"))
+        if (collision.gameObject.CompareTag("Tree"))
         {
             Attack();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision other)
     {
         animator.SetBool("Attack", false);
 
@@ -162,14 +162,14 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    //IEnumerator UnlockLand()
-    //{
-    //    yield return new WaitForSeconds(1f);
-    //    progressBar.BarValue = 100f;
-    //    connectingPart.SetActive(false);
-    //    land.SetActive(true);
+    IEnumerator UnlockLand()
+    {
+        yield return new WaitForSeconds(1f);
+        //progressBar.BarValue = 100f;
+        connectingPart.SetActive(false);
+        land.SetActive(true);
 
-    //}
+    }
 
     IEnumerator UnlockSecondLand()
     {

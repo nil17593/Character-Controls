@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform target;
-    [SerializeField] private Transform target2;
+    //[SerializeField] private Transform target2;
     [SerializeField] private Vector3 offset;
     [SerializeField] private float smoothFactor;
 
@@ -25,16 +25,16 @@ public class CameraController : MonoBehaviour
         FollowPlayer();
     }
 
-    public IEnumerator DisplayUnlockingLand()
-    {
-        Vector3 targetPos = target2.position + offset;
-        Vector3 smoothPos = Vector3.Lerp(transform.position, targetPos, smoothFactor * Time.deltaTime);
-        transform.position = targetPos;
+    //public IEnumerator DisplayUnlockingLand()
+    //{
+    //    Vector3 targetPos = target2.position + offset;
+    //    Vector3 smoothPos = Vector3.Lerp(transform.position, targetPos, smoothFactor * Time.deltaTime);
+    //    transform.position = targetPos;
 
-        yield return new WaitForSeconds(2f);
+    //    yield return new WaitForSeconds(2f);
 
-        Vector3 targetPos2 = target.position + offset;
-        Vector3 smoothPos2 = Vector3.Lerp(transform.position, targetPos2, smoothFactor * Time.deltaTime);
-        transform.position = targetPos2;
-    }
+    //    Vector3 targetPos2 = target.position + offset;
+    //    Vector3 smoothPos2 = Vector3.Lerp(transform.position, targetPos2, smoothFactor * Time.deltaTime);
+    //    transform.position = targetPos2;
+    //}
 }
