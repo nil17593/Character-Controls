@@ -34,6 +34,8 @@ public class CharacterMovement : MonoBehaviour
     private TreeController treeController;
     public ProgressBar progressBar;
 
+    public TrailRenderer trail;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();        
@@ -76,6 +78,8 @@ public class CharacterMovement : MonoBehaviour
         animator.SetBool("Idle" ,false);
         animator.SetBool("Running", false);
         animator.SetBool("Attack" , true);
+
+        
         //transform.DORotate(treeController.transform.position,0.3f,RotateMode.Fast);
     }
 

@@ -85,7 +85,7 @@ public class TreeController : MonoBehaviour
             WoodCollecter.woodList.Add(WoodCollecter.woodCount);
             //Debug.Log(WoodCollecter.woodCount) ;
 
-            if (WoodCollecter.woodList.Count <= 7)
+            if (WoodCollecter.woodList.Count <= 8)
             {
                 go.transform.position = woodInstantiateArea.transform.position;
                 go.transform.rotation = woodInstantiateArea.transform.rotation;
