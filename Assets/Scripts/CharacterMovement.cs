@@ -116,7 +116,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject == connectingPart && UIManager.Instance.score > 1)
+        if (collision.gameObject.CompareTag("ConnectingPart") && UIManager.Instance.score > 1)
         {
             StartCoroutine(UnlockLand());
         }
@@ -130,11 +130,11 @@ public class CharacterMovement : MonoBehaviour
         {
             StartCoroutine(UnlockSecondLand());
         }
-        else
-        {
-            connectingPart.SetActive(true);
-            land.SetActive(false);
-        }
+        //else
+        //{
+        //    connectingPart.SetActive(true);
+        //    land.SetActive(false);
+        //}
         
     }
 
@@ -165,10 +165,11 @@ public class CharacterMovement : MonoBehaviour
     IEnumerator UnlockLand()
     {
         yield return new WaitForSeconds(1f);
-        //progressBar.BarValue = 100f;
         connectingPart.SetActive(false);
+        //Instantiate(land,new Vector3(-2.951f,0.5f,-21.87f), Quaternion.identity);
+       
+        //progressBar.BarValue = 100f;
         land.SetActive(true);
-
     }
 
     IEnumerator UnlockSecondLand()
@@ -176,7 +177,7 @@ public class CharacterMovement : MonoBehaviour
         yield return new WaitForSeconds(1f);
         connectingPart2.SetActive(false);
         land2.SetActive(true);
-        progressBar.BarValue = 100f * Time.time;
+        //progressBar.BarValue = 100f * Time.time;
     }
 
     IEnumerator UnlockThirdLand()
@@ -184,7 +185,7 @@ public class CharacterMovement : MonoBehaviour
         yield return new WaitForSeconds(1f);
         connectingPart3.SetActive(false);
         land3.SetActive(true);
-        progressBar.BarValue = 100f;
+        //progressBar.BarValue = 100f;
     }
 
     IEnumerator UnloadWoods()

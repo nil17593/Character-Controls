@@ -5,18 +5,17 @@ using System.Collections.Generic;
 
 public class TreeController : MonoBehaviour
 {
-    [HideInInspector]public int count;
     private float distance;
-    public GameObject woodPrefab;
-    public GameObject woodPrefab2;
+    [SerializeField] private GameObject woodPrefab;
+    [SerializeField] private GameObject woodPrefab2;
     private GameObject childprefab;
     private float height;
     private bool logCreate = true;
     #region Collected wood 
     [Header("Collected wood by player")]
-    public GameObject woodInstantiateArea;
-    public GameObject woodInstantiateArea2;
-    public Transform target;
+    [SerializeField] private GameObject woodInstantiateArea;
+    [SerializeField] private GameObject woodInstantiateArea2;
+    //public Transform target;
     #endregion
     private static TreeController instance;
     public static TreeController Instance { get { return instance; } }
@@ -79,42 +78,53 @@ public class TreeController : MonoBehaviour
 
     void CollectWoods()
     {
-        GameObject go = Instantiate(woodPrefab2);
-        WoodCollecter.woodCount++;
-        WoodCollecter.woodList.Add(WoodCollecter.woodCount);
-        //Debug.Log(WoodCollecter.woodCount) ;
-
-        if (WoodCollecter.woodList.Count <= 8)
+        if (WoodCollecter.woodList.Count < 22)
         {
-            go.transform.position = woodInstantiateArea.transform.position;
-            go.transform.rotation = woodInstantiateArea.transform.rotation;
-            go.transform.SetParent(woodInstantiateArea.transform);
-            Vector3 tempPos = woodInstantiateArea.transform.position;
-            tempPos.y += height;
-            go.gameObject.transform.position = tempPos;
-            height += 0.7f;
-            UIManager.Instance.value += 1;
-            UIManager.Instance.pb.BarValue += 0.5f;
-            UIManager.Instance.IncreaseScore(1);
+            GameObject go = Instantiate(woodPrefab2);
+            WoodCollecter.woodCount++;
+            WoodCollecter.woodList.Add(WoodCollecter.woodCount);
+            //Debug.Log(WoodCollecter.woodCount) ;
+
+            if (WoodCollecter.woodList.Count <= 7)
+            {
+                go.transform.position = woodInstantiateArea.transform.position;
+                go.transform.rotation = woodInstantiateArea.transform.rotation;
+                go.transform.SetParent(woodInstantiateArea.transform);
+                Vector3 tempPos = woodInstantiateArea.transform.position;
+                tempPos.y += height;
+                go.gameObject.transform.position = tempPos;
+                height += 0.9f;
+                UIManager.Instance.value += 1;
+                UIManager.Instance.pb.BarValue += 0.5f;
+                UIManager.Instance.IncreaseScore(1);
+            }
+            //else if(WoodCollecter.woodList.Count >= 22)
+            //{
+            //    go.transform.position = woodInstantiateArea2.transform.position;
+            //    go.transform.rotation = woodInstantiateArea2.transform.rotation;
+            //    go.transform.SetParent(woodInstantiateArea2.transform);
+            //    UIManager.Instance.value += 1;
+            //    UIManager.Instance.pb.BarValue += 0.5f;
+            //    UIManager.Instance.IncreaseScore(1);
+            //}
+            else
+            {
+                go.transform.position = woodInstantiateArea2.transform.position;
+                go.transform.rotation = woodInstantiateArea2.transform.rotation;
+                go.transform.SetParent(woodInstantiateArea2.transform);
+                Vector3 temp = woodInstantiateArea2.transform.position;// + new Vector3(0f, -2f, 0f);
+                temp.y += height;
+                go.gameObject.transform.position = temp;
+                height += 0.8f;
+                UIManager.Instance.value += 1;
+                UIManager.Instance.pb.BarValue += 0.5f;
+                UIManager.Instance.IncreaseScore(1);
+            }
         }
-        //else if(WoodCollecter.woodList.Count >= 22)
-        //{
-        //    go.transform.position = woodInstantiateArea2.transform.position;
-        //    go.transform.rotation = woodInstantiateArea2.transform.rotation;
-        //    go.transform.SetParent(woodInstantiateArea2.transform);
-        //    UIManager.Instance.value += 1;
-        //    UIManager.Instance.pb.BarValue += 0.5f;
-        //    UIManager.Instance.IncreaseScore(1);
-        //}
         else
         {
-            go.transform.position = woodInstantiateArea2.transform.position;
-            go.transform.rotation = woodInstantiateArea2.transform.rotation;
-            go.transform.SetParent(woodInstantiateArea2.transform);
-            Vector3 temp = woodInstantiateArea2.transform.position;// + new Vector3(0f, -2f, 0f);
-            temp.y += height;
-            go.gameObject.transform.position = temp;
-            height += 0.6f;
+            WoodCollecter.woodCount++;
+            WoodCollecter.woodList.Add(WoodCollecter.woodCount);
             UIManager.Instance.value += 1;
             UIManager.Instance.pb.BarValue += 0.5f;
             UIManager.Instance.IncreaseScore(1);
