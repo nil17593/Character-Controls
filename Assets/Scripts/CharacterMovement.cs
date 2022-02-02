@@ -30,12 +30,12 @@ public class CharacterMovement : MonoBehaviour
     #endregion
 
     private CameraController cameraController;
-    private AxeController axeController;
+    //public AxeController axeController;
     private TreeController treeController;
     public ProgressBar progressBar;
 
-    public TrailRenderer trail;
-
+    //public TrailRenderer trail;
+    public bool cutting = false;
     void Start()
     {
         rb = GetComponent<Rigidbody>();        
@@ -49,18 +49,13 @@ public class CharacterMovement : MonoBehaviour
         CoinPanelOnOff();
     }
 
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("tr"))
-    //    {
-    //        treeController.SellWood();
-    //    }
-    //}
     private void Movement()
     {
+        //cutting = false;
+        //axeController.ChangeTrailState(false, 0f);
         rb.velocity = new Vector3(fixedJoystick.Horizontal * movementSpeed, rb.velocity.y, fixedJoystick.Vertical * movementSpeed);
         if (fixedJoystick.Horizontal != 0f || fixedJoystick.Vertical != 0f)
-        {
+        {           
             animator.SetBool("Idle", false);
             //Debug.Log("IF");
             animator.SetBool("Running", true);
@@ -75,11 +70,12 @@ public class CharacterMovement : MonoBehaviour
 
     void Attack()
     {
+        cutting = true;
         animator.SetBool("Idle" ,false);
         animator.SetBool("Running", false);
         animator.SetBool("Attack" , true);
+        //axeController.ChangeTrailState(true, 0.2f);
 
-        
         //transform.DORotate(treeController.transform.position,0.3f,RotateMode.Fast);
     }
 
@@ -146,21 +142,26 @@ public class CharacterMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Tree"))
         {
+            cutting = true;
             Attack();
         }
     }
 
     private void OnCollisionExit(Collision other)
     {
+        cutting = false;
+        //axeController.ChangeTrailState(false, 0f);
         animator.SetBool("Attack", false);
 
         if (fixedJoystick.Horizontal != 0f || fixedJoystick.Vertical != 0f)
         {
+            //axeController.ChangeTrailState(false, 0f);
             animator.SetBool("Idle", false);
             animator.SetBool("Running", true);
         }
         else
         {
+            //axeController.ChangeTrailState(false, 0f);
             animator.SetBool("Idle", true);
             animator.SetBool("Running", false);
         }

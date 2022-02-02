@@ -13,7 +13,7 @@ public class WoodCollecter : MonoBehaviour
         woodList = new List<int>();
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
 
