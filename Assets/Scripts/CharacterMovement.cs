@@ -30,11 +30,9 @@ public class CharacterMovement : MonoBehaviour
     #endregion
 
     private CameraController cameraController;
-    //public AxeController axeController;
     private TreeController treeController;
-    public ProgressBar progressBar;
 
-    //public TrailRenderer trail;
+    public ProgressBar progressBar;
     public bool cutting = false;
     void Start()
     {
@@ -51,13 +49,10 @@ public class CharacterMovement : MonoBehaviour
 
     private void Movement()
     {
-        //cutting = false;
-        //axeController.ChangeTrailState(false, 0f);
         rb.velocity = new Vector3(fixedJoystick.Horizontal * movementSpeed, rb.velocity.y, fixedJoystick.Vertical * movementSpeed);
         if (fixedJoystick.Horizontal != 0f || fixedJoystick.Vertical != 0f)
         {           
             animator.SetBool("Idle", false);
-            //Debug.Log("IF");
             animator.SetBool("Running", true);
             transform.rotation = Quaternion.LookRotation(rb.velocity);
         }
@@ -74,9 +69,6 @@ public class CharacterMovement : MonoBehaviour
         animator.SetBool("Idle" ,false);
         animator.SetBool("Running", false);
         animator.SetBool("Attack" , true);
-        //axeController.ChangeTrailState(true, 0.2f);
-
-        //transform.DORotate(treeController.transform.position,0.3f,RotateMode.Fast);
     }
 
     public void CoinPanelOnOff()
@@ -130,12 +122,6 @@ public class CharacterMovement : MonoBehaviour
         {
             StartCoroutine(UnlockSecondLand());
         }
-        //else
-        //{
-        //    connectingPart.SetActive(true);
-        //    land.SetActive(false);
-        //}
-        
     }
 
     void OnCollisionStay(Collision collision)
@@ -150,18 +136,15 @@ public class CharacterMovement : MonoBehaviour
     private void OnCollisionExit(Collision other)
     {
         cutting = false;
-        //axeController.ChangeTrailState(false, 0f);
         animator.SetBool("Attack", false);
 
         if (fixedJoystick.Horizontal != 0f || fixedJoystick.Vertical != 0f)
         {
-            //axeController.ChangeTrailState(false, 0f);
             animator.SetBool("Idle", false);
             animator.SetBool("Running", true);
         }
         else
         {
-            //axeController.ChangeTrailState(false, 0f);
             animator.SetBool("Idle", true);
             animator.SetBool("Running", false);
         }
@@ -171,9 +154,6 @@ public class CharacterMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         connectingPart.SetActive(false);
-        //Instantiate(land,new Vector3(-2.951f,0.5f,-21.87f), Quaternion.identity);
-       
-        //progressBar.BarValue = 100f;
         land.SetActive(true);
     }
 
@@ -182,7 +162,6 @@ public class CharacterMovement : MonoBehaviour
         yield return new WaitForSeconds(1f);
         connectingPart2.SetActive(false);
         land2.SetActive(true);
-        //progressBar.BarValue = 100f * Time.time;
     }
 
     IEnumerator UnlockThirdLand()
@@ -190,7 +169,6 @@ public class CharacterMovement : MonoBehaviour
         yield return new WaitForSeconds(1f);
         connectingPart3.SetActive(false);
         land3.SetActive(true);
-        //progressBar.BarValue = 100f;
     }
 
     IEnumerator UnloadWoods()
@@ -200,11 +178,3 @@ public class CharacterMovement : MonoBehaviour
     }
  
 }
- 
-
-/*void OnDisable()
-    {
-        handle.anchoredPosition = Vector2.zero;
-        input = Vector2.zero;
-    }
-*/

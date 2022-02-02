@@ -44,11 +44,7 @@ public class UIManager : MonoBehaviour
         resumeButton.onClick.AddListener(ResumeGame);
         restartButton.onClick.AddListener(Restart);
         menuButton.onClick.AddListener(LoadMenuScene);
-            instance = this;
-            //DontDestroyOnLoad(instance);
-
-
-
+        instance = this;
         RefreshUI();
     }
 
@@ -58,7 +54,6 @@ public class UIManager : MonoBehaviour
         {
             Time.timeScale = 0;
             isPaused = true;
-            //Debug.Log("click");
             pausePanel.SetActive(true);
         }
     }
@@ -99,7 +94,6 @@ public class UIManager : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1;
-        //SceneManager.LoadScene("GameScene");
     }
 
     private void LoadMenuScene()
