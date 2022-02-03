@@ -3,9 +3,18 @@
 
 public class AxeController : MonoBehaviour
 {
+    #region refereance of other scripts
     private TreeController treeController;
-    TrailRenderer trail;
-    public CharacterMovement character;
+    #endregion
+
+    #region private components
+    private TrailRenderer trail;
+    #endregion
+
+    #region player reference for trail emitting
+    [SerializeField]
+    private CharacterMovement character;
+    #endregion
 
     private void Start()
     {
@@ -14,9 +23,10 @@ public class AxeController : MonoBehaviour
 
     private void Update()
     {
-        Change();
+        ChangeTrailState();
     }
 
+    //reduce tree size while trigger with tree
     private void OnTriggerEnter(Collider other)
     {
         TreeController tree = other.transform.GetComponent<TreeController>();
@@ -27,14 +37,9 @@ public class AxeController : MonoBehaviour
         }
     }
 
-    public void ChangeTrailState(bool isEmmiting,float duration)
-    {
-        Debug.Log("Chaltay");
-        trail.emitting = isEmmiting;
-        trail.time = duration;
-    }
 
-    private void Change()
+    //Change trail state while cutting tree
+    private void ChangeTrailState()
     {
         if (character.cutting == true)
         {

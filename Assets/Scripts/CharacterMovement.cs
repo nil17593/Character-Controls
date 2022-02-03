@@ -6,19 +6,27 @@ public class CharacterMovement : MonoBehaviour
 {
     #region Character Settings
     [Header("Character")]
-    [SerializeField] private float movementSpeed = 15f;
-    [SerializeField] private Vector3 rotationSpeed = new Vector3(0, 40, 0);
+    [SerializeField]
+    private float movementSpeed = 15f;
+    [SerializeField]
+    private Vector3 rotationSpeed = new Vector3(0, 40, 0);
     private Rigidbody rb;
     #endregion
 
     #region Land Unlock
     [Header("Land Unlock")]
-    [SerializeField] private GameObject connectingPart;
-    [SerializeField] private GameObject connectingPart2;
-    [SerializeField] private GameObject connectingPart3;
-    [SerializeField] private GameObject land;
-    [SerializeField] private GameObject land2;
-    [SerializeField] private GameObject land3;
+    [SerializeField]
+    private GameObject connectingPart;
+    [SerializeField]
+    private GameObject connectingPart2;
+    [SerializeField]
+    private GameObject connectingPart3;
+    [SerializeField]
+    private GameObject land;
+    [SerializeField]
+    private GameObject land2;
+    [SerializeField]
+    private GameObject land3;
     #endregion
 
 
@@ -29,11 +37,16 @@ public class CharacterMovement : MonoBehaviour
     private FixedJoystick fixedJoystick;
     #endregion
 
+    #region references of other scripts
     private CameraController cameraController;
     private TreeController treeController;
+    #endregion
 
-    public ProgressBar progressBar;
+    #region public bools for trail renderer on off on AXE
     public bool cutting = false;
+    #endregion
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();        
@@ -47,6 +60,7 @@ public class CharacterMovement : MonoBehaviour
         CoinPanelOnOff();
     }
 
+    //Player Movement
     private void Movement()
     {
         rb.velocity = new Vector3(fixedJoystick.Horizontal * movementSpeed, rb.velocity.y, fixedJoystick.Vertical * movementSpeed);
@@ -63,6 +77,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    //Cutting Animation
     void Attack()
     {
         cutting = true;
@@ -71,6 +86,7 @@ public class CharacterMovement : MonoBehaviour
         animator.SetBool("Attack" , true);
     }
 
+    //Coin panels will render when player is close to it
     public void CoinPanelOnOff()
     {
         float distance = Vector3.Distance(this.transform.position, UIManager.Instance.coinPanel.transform.position);
@@ -124,6 +140,8 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+
+    //player will do cutting animation 
     void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Tree"))
@@ -133,6 +151,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    //player stops cutting animation
     private void OnCollisionExit(Collision other)
     {
         cutting = false;
@@ -150,6 +169,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    //coroutine for the unlocking land
     IEnumerator UnlockLand()
     {
         yield return new WaitForSeconds(1f);
@@ -157,6 +177,7 @@ public class CharacterMovement : MonoBehaviour
         land.SetActive(true);
     }
 
+    //coroutine for the unlocking land
     IEnumerator UnlockSecondLand()
     {
         yield return new WaitForSeconds(1f);
@@ -164,6 +185,7 @@ public class CharacterMovement : MonoBehaviour
         land2.SetActive(true);
     }
 
+    //coroutine for the unlocking land
     IEnumerator UnlockThirdLand()
     {
         yield return new WaitForSeconds(1f);
@@ -171,6 +193,7 @@ public class CharacterMovement : MonoBehaviour
         land3.SetActive(true);
     }
 
+    //coroutine for the unlocking land
     IEnumerator UnloadWoods()
     {
         yield return new WaitForSeconds(1f);

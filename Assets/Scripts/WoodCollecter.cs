@@ -2,38 +2,48 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// this class handles the logic of wood collection 
+/// the collected wood is instantiated in given area
+/// the integer list is holds the counts of a collected wood 
+/// </summary>
 public class WoodCollecter : MonoBehaviour
 {
+    #region private Components
     private List<int> woodList = null;
     private int woodCount = 0;
     private float height = 0f;
     private float height2 = 0f;
+    #endregion
 
     [Header("Collected wood by player")]
-    [SerializeField] private GameObject woodPrefab;
-    [SerializeField] private GameObject woodInstantiateArea;
-    [SerializeField] private GameObject woodInstantiateArea2;
+    [SerializeField]
+    private GameObject woodPrefab;
+    [SerializeField]
+    private GameObject woodInstantiateArea;
+    [SerializeField]
+    private GameObject woodInstantiateArea2;
+
 
     private static WoodCollecter instance;
-    public static WoodCollecter Instance { get { return instance; } }
+    public static WoodCollecter Instance { get { return instance; } }//public instance to share
     void Start()
     {
         instance = this;
         woodList = new List<int>();
     }
 
-
+    //wood collection by player 
     public void WoodCollection()
     {
         Debug.Log("Top");
-        if (woodCount <= 20)
+        if (woodCount <= 16)
         {
             Debug.Log("less");
             GameObject go = Instantiate(woodPrefab);
             woodCount++;
             woodList.Add(woodCount);
-            if (woodCount <= 10)
+            if (woodCount <= 8)
             {
                 go.transform.position = woodInstantiateArea.transform.position;
                 go.transform.rotation = woodInstantiateArea.transform.rotation;
@@ -48,7 +58,7 @@ public class WoodCollecter : MonoBehaviour
                 Debug.Log(woodCount);
             }
 
-            else if (woodCount > 10)
+            else //if (woodCount > 10)
             {
                 go.transform.position = woodInstantiateArea2.transform.position;
                 go.transform.rotation = woodInstantiateArea2.transform.rotation;

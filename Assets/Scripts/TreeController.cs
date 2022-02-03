@@ -5,9 +5,16 @@ using System.Collections.Generic;
 
 public class TreeController : MonoBehaviour
 {
-    [SerializeField] private GameObject woodPrefab;
-    [SerializeField] private GameObject woodPrefab2;
+    [Header("wood prefabs to animate")]
+    [SerializeField]
+    private GameObject woodPrefab;
+    [SerializeField]
+    private GameObject woodPrefab2;
+
+    #region private components and variables
     private bool logCreate = true;
+    #endregion
+
 
     private static TreeController instance;
     public static TreeController Instance { get { return instance; } }
@@ -17,6 +24,8 @@ public class TreeController : MonoBehaviour
     {
         instance = this;
     }
+
+    //coroutine for destroy woods
     IEnumerator DestroyWood(GameObject wood)
     {
         yield return new WaitForSeconds(0.4f);
@@ -24,6 +33,7 @@ public class TreeController : MonoBehaviour
         logCreate = true;
     }
 
+    //reduce tree size after every hit
     public void ReduceSize()
     {
         Vector3 reduceSize = new Vector3(0f, 0.1f, 0f);
@@ -38,6 +48,7 @@ public class TreeController : MonoBehaviour
         }
     }
 
+    //animate woods using doTween
     void DoAnimateWoods()
     {
         GameObject wood = Instantiate(woodPrefab);

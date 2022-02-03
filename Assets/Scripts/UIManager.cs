@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     public ProgressBar pb;
     public float value;
 
-    #region Coins
+    #region Coins public to give referance to other scripts
     [Header("Coins")]
     public TextMeshProUGUI coinText;
     public GameObject coinPanel;
@@ -18,20 +18,26 @@ public class UIManager : MonoBehaviour
     public GameObject coinPanel3;
     #endregion
 
-    [SerializeField] private TextMeshProUGUI woodText;
+    [SerializeField]
+    private TextMeshProUGUI woodText;
 
     #region PausePanel
     [Header("Pause Panel")]
-    [SerializeField] private Button pauseButton;
-    [SerializeField] private GameObject pausePanel;
-    [SerializeField] private Button resumeButton;
-    [SerializeField] private Button restartButton;
-    [SerializeField] private Button menuButton;
+    [SerializeField]
+    private Button pauseButton;
+    [SerializeField]
+    private GameObject pausePanel;
+    [SerializeField]
+    private Button resumeButton;
+    [SerializeField]
+    private Button restartButton;
+    [SerializeField]
+    private Button menuButton;
     #endregion
 
-    public TextMeshProUGUI progressText;
+    //public TextMeshProUGUI progressText;
     [HideInInspector] public int score = 0;
-    private int progressScore = 0;
+    //private int progressScore = 0;
     private bool isPaused;
 
     private static UIManager instance;
@@ -48,6 +54,8 @@ public class UIManager : MonoBehaviour
         RefreshUI();
     }
 
+
+    //pause game
     private void PauseGame()
     {
         if (!isPaused)
@@ -58,6 +66,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    //resume game
     private void ResumeGame()
     {
         if (isPaused)
@@ -68,34 +77,39 @@ public class UIManager : MonoBehaviour
         }
     }
 
-
+    //progerss bar
     public void ProgressBar()
     {
         pb.BarValue = value;
     }
 
+    //increase score
     public void IncreaseScore(int increament)
     {
         score += increament;
         RefreshUI();
     }
 
+    //refresh text
     private void RefreshUI()
     {
         woodText.text =  ""+ score;
     }
 
-    public void UpdateProgerssBarText(int score)
-    {
-        progressText.text = "/" + progressScore;
-    }
+    //update progress bar
+    //public void UpdateProgerssBarText(int score)
+    //{
+    //    progressText.text = "/" + progressScore;
+    //}
 
+    //restart game
     private void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         Time.timeScale = 1;
     }
 
+    //load menu/lobby scene
     private void LoadMenuScene()
     {
         SceneManager.LoadScene("MenuScene");
