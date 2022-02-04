@@ -14,15 +14,22 @@ public class WoodCollecter : MonoBehaviour
     private int woodCount = 0;
     private float height = 0f;
     private float height2 = 0f;
+    private GameObject go;
     #endregion
 
     [Header("Collected wood by player")]
     [SerializeField]
-    private GameObject woodPrefab;
+    private GameObject WoodPrefab;
     [SerializeField]
-    private GameObject woodInstantiateArea;
+    private GameObject WoodInstantiateArea;
     [SerializeField]
-    private GameObject woodInstantiateArea2;
+    private GameObject WoodInstantiateArea2;
+
+    [Header("UI- Floating Point")]
+    [SerializeField]
+    private GameObject FloatingPoint;
+    [SerializeField]
+    private Transform FlotObject;
 
 
     private static WoodCollecter instance;
@@ -40,36 +47,38 @@ public class WoodCollecter : MonoBehaviour
         if (woodCount <= 16)
         {
             Debug.Log("less");
-            GameObject go = Instantiate(woodPrefab);
+            go = Instantiate(WoodPrefab);
             woodCount++;
             woodList.Add(woodCount);
             if (woodCount <= 8)
             {
-                go.transform.position = woodInstantiateArea.transform.position;
-                go.transform.rotation = woodInstantiateArea.transform.rotation;
-                go.transform.SetParent(woodInstantiateArea.transform);
-                Vector3 tempPos = woodInstantiateArea.transform.position;
+                go.transform.position = WoodInstantiateArea.transform.position;
+                go.transform.rotation = WoodInstantiateArea.transform.rotation;
+                go.transform.SetParent(WoodInstantiateArea.transform);
+                Vector3 tempPos = WoodInstantiateArea.transform.position;
                 tempPos.y += height;
                 go.transform.position = tempPos;
                 height += 0.9f;
                 UIManager.Instance.value += 1;
                 UIManager.Instance.pb.BarValue += 0.5f;
                 UIManager.Instance.IncreaseScore(1);
+                Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
                 Debug.Log(woodCount);
             }
 
             else //if (woodCount > 10)
             {
-                go.transform.position = woodInstantiateArea2.transform.position;
-                go.transform.rotation = woodInstantiateArea2.transform.rotation;
-                go.transform.SetParent(woodInstantiateArea2.transform);
-                Vector3 temp = woodInstantiateArea2.transform.position;// + new Vector3(0f, -2f, 0f);
+                go.transform.position = WoodInstantiateArea2.transform.position;
+                go.transform.rotation = WoodInstantiateArea2.transform.rotation;
+                go.transform.SetParent(WoodInstantiateArea2.transform);
+                Vector3 temp = WoodInstantiateArea2.transform.position;// + new Vector3(0f, -2f, 0f);
                 temp.y += height2;
                 go.transform.position = temp;
                 height2 += 0.8f;
                 UIManager.Instance.value += 1;
                 UIManager.Instance.pb.BarValue += 0.5f;
                 UIManager.Instance.IncreaseScore(1);
+                Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
                 Debug.Log(woodCount);
             }
         }
@@ -80,6 +89,7 @@ public class WoodCollecter : MonoBehaviour
             UIManager.Instance.value += 1;
             UIManager.Instance.pb.BarValue += 0.5f;
             UIManager.Instance.IncreaseScore(1);
+            Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
         }
     }
 

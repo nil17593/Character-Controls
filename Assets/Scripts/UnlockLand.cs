@@ -14,32 +14,22 @@ public class UnlockLand : MonoBehaviour
     [SerializeField] private GameObject land3;
     #endregion
 
-    void Start()
-    {
 
-    }
-
-    
-    void Update()
-    {
-
-    }
-
-    IEnumerator UnlockFirstLand()
+    public IEnumerator UnlockFirstLand()
     {
         yield return new WaitForSeconds(1f);
         connectingPart.SetActive(false);
         land.SetActive(true);
     }
 
-    IEnumerator UnlockSecondLand()
+    public IEnumerator UnlockSecondLand()
     {
         yield return new WaitForSeconds(1f);
         connectingPart2.SetActive(false);
         land2.SetActive(true);
     }
 
-    IEnumerator UnlockThirdLand()
+    public IEnumerator UnlockThirdLand()
     {
         yield return new WaitForSeconds(1f);
         connectingPart3.SetActive(false);
