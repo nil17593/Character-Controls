@@ -13,6 +13,7 @@ public class TreeController : MonoBehaviour
 
     #region private components and variables
     private bool logCreate = true;
+    //private CapsuleCollider boxCollider;
     #endregion
 
 
@@ -23,6 +24,7 @@ public class TreeController : MonoBehaviour
     private void Start()
     {
         instance = this;
+        //boxCollider = GetComponentInChildren<CapsuleCollider>();
     }
 
     //coroutine for destroy woods
@@ -45,6 +47,11 @@ public class TreeController : MonoBehaviour
             {
                 DoAnimateWoods();
             }
+            //if (transform.localScale.y <= 2f)
+            //{
+            //    Debug.Log("aya");
+            //    boxCollider = null;
+            //}
         }
     }
 
