@@ -2,6 +2,9 @@ using System.Collections;
 using UnityEngine;
 
 
+/// <summary>
+/// Handles character movement
+/// </summary>
 public class CharacterMovement : MonoBehaviour
 {
     #region Character Settings

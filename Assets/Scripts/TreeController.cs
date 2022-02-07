@@ -3,6 +3,11 @@ using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
 
+
+/// <summary>
+/// Handles Tree logic
+/// Attched on every tree in scene.
+/// </summary>
 public class TreeController : MonoBehaviour
 {
     [Header("wood prefabs to animate")]
