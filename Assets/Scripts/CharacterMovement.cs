@@ -13,6 +13,7 @@ public class CharacterMovement : MonoBehaviour
     private float movementSpeed = 15f;
     [SerializeField]
     private Vector3 rotationSpeed = new Vector3(0, 40, 0);
+    [SerializeField] private Transform FootSteps;
     private Rigidbody rb;
     #endregion
 
@@ -71,6 +72,7 @@ public class CharacterMovement : MonoBehaviour
         {           
             animator.SetBool("Idle", false);
             animator.SetBool("Running", true);
+            //Instantiate(FootSteps, transform.position + new Vector3(0f,3f,0f), FootSteps.rotation);
             transform.rotation = Quaternion.LookRotation(rb.velocity);
         }
         else

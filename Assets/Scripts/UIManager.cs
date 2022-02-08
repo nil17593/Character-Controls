@@ -90,6 +90,12 @@ public class UIManager : MonoBehaviour
         RefreshUI();
     }
 
+    public void DecreaseScore(int decreament)
+    {
+        score -= decreament;
+        RefreshUI();
+    }
+
     //refresh text
     private void RefreshUI()
     {

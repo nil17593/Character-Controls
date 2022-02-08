@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 /// <summary>
 /// this class handles the logic of wood collection 
@@ -15,6 +16,8 @@ public class WoodCollecter : MonoBehaviour
     private float height = 0f;
     private float height2 = 0f;
     private GameObject go;
+    private List<GameObject> woods;
+    private int count2;
     #endregion
 
     [Header("Collected wood by player")]
@@ -31,6 +34,8 @@ public class WoodCollecter : MonoBehaviour
     [SerializeField]
     private Transform FlotObject;
 
+    public Transform woodCollectionArea;
+
 
     private static WoodCollecter instance;
     public static WoodCollecter Instance { get { return instance; } }//public instance to share
@@ -38,19 +43,18 @@ public class WoodCollecter : MonoBehaviour
     {
         instance = this;
         woodList = new List<int>();
+        woods = new List<GameObject>();
     }
 
     //wood collection by player 
     public void WoodCollection()
     {
-        Debug.Log("Top");
-        if (woodCount <= 16)
+        if (woodList.Count <= 16)
         {
-            Debug.Log("less");
             go = Instantiate(WoodPrefab);
-            woodCount++;
-            woodList.Add(woodCount);
-            if (woodCount <= 8)
+            woods.Add(go.gameObject);
+            woodList.Add(1);
+            if (woods.Count <= 8)
             {
                 go.transform.position = WoodInstantiateArea.transform.position;
                 go.transform.rotation = WoodInstantiateArea.transform.rotation;
@@ -63,7 +67,6 @@ public class WoodCollecter : MonoBehaviour
                 UIManager.Instance.pb.BarValue += 0.5f;
                 UIManager.Instance.IncreaseScore(1);
                 Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
-                Debug.Log(woodCount);
             }
 
             else //if (woodCount > 10)
@@ -79,18 +82,80 @@ public class WoodCollecter : MonoBehaviour
                 UIManager.Instance.pb.BarValue += 0.5f;
                 UIManager.Instance.IncreaseScore(1);
                 Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
-                Debug.Log(woodCount);
             }
         }
         else
         {
-            woodCount++;
-            woodList.Add(woodCount);
+            woodList.Add(1);
             UIManager.Instance.value += 1;
             UIManager.Instance.pb.BarValue += 0.5f;
             UIManager.Instance.IncreaseScore(1);
             Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
+            //height = 0f;
+            //height2 = 0f;
+            Debug.Log("1: "+height);
+            Debug.Log("2: " + height2);
+
         }
     }
 
+    public void SellWood()
+    {
+        if (woodList.Count > 0)
+        {
+            RemoveList();
+        }
+    }
+
+    private void RemoveList()
+    {
+        for (int i = woodList.Count - 1; i > 0; i--)
+        {
+
+            woodList.RemoveAt(woodList.Count - i);
+            UIManager.Instance.DecreaseScore(1);
+            if (woodList.Count <= woods.Count)
+            {
+                DoAnimateWoods();
+            }
+        }
+    }
+
+    void DoAnimateWoods()
+    {
+        foreach(GameObject go in woods)
+        {
+            //go.transform.DOPath()
+            //go.transform.DOLocalJump(endValue: woodCollectionArea.transform.position,
+            //   jumpPower: 10f,numJumps: 1,duration:2f).SetEase(Ease.OutBack).OnComplete(() =>
+            //{
+            //    RemoveWoods();
+            //});
+            go.transform.DOMove(woodCollectionArea.transform.position + new Vector3(0f, 0f, 0f), 0.5f).SetEase(Ease.InBack).OnComplete(() => {
+            RemoveWoods();
+            });
+
+        }
+
+    }
+
+
+    void RemoveWoods()
+    {
+        Destroy(woods[woods.Count - 1].gameObject);
+        if (woods.Count <= 8)
+        {
+            height -= 0.9f;
+        }
+        if (woods.Count > 8)
+        {
+            height2 -= 0.8f;
+        }
+        //Destroy(woods[i].gameObject);
+        woods.RemoveAt(woods.Count - 1);
+       
+        //woodList.Count-1;
+        //woodCount--;
+        Debug.Log("REMOVELIST FUNCTION  "+woodCount);
+    }
 }
