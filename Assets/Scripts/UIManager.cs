@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
 
     //public TextMeshProUGUI progressText;
     [HideInInspector] public int score = 0;
+    private int coinScore;
     //private int progressScore = 0;
     private bool isPaused;
 
@@ -87,6 +88,12 @@ public class UIManager : MonoBehaviour
     public void IncreaseScore(int increament)
     {
         score += increament;
+        RefreshUI();
+    }
+
+    public void IncreaseCoins(int increament)
+    {
+        coinScore += increament;
         RefreshUI();
     }
 
