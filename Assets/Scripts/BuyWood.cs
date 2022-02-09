@@ -5,41 +5,65 @@ using DG.Tweening;
 
 public class BuyWood : MonoBehaviour
 {
-    //private List<GameObject> woodstobuy;
     private GameObject g;
-    [SerializeField] private GameObject woodPrefab;
-    [SerializeField] private Transform woodCreateArea;
-    [SerializeField] private Transform target;
+    [SerializeField] 
+    private GameObject woodPrefab;
+    [SerializeField] 
+    private Transform woodCreateArea;
+    [SerializeField] 
+    private Transform target;
+
     private GameObject[] woodArray;
-    private void Start()
+    private bool isPlayercolliding = false;
+    private float timer = 1f;
+    public static int count = 0;
+
+
+    private void Update()
     {
-        //woodArray = new GameObject[g];
-        //woodstobuy = new List<GameObject>();
+        if (isPlayercolliding == true)
+        {
+            timer -= Time.deltaTime;
+            if (timer < 0)
+            {
+                timer = 0;
+            }
+        }
     }
 
-    void OnCollisionStay(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponent<CharacterMovement>() != null)
         {
-            StartCoroutine(GenerateWoodToBuy());
-
+            isPlayercolliding = true;
         }
+    }
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.gameObject.GetComponent<CharacterMovement>() != null && isPlayercolliding == true)
+        {
+            StartCoroutine(GenerateWoodToBuy());
+            //count = 0;
+        }
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        StopCoroutine(GenerateWoodToBuy());
     }
 
     IEnumerator GenerateWoodToBuy()
     {
-        for(int i = 0; i < 14; i++)
+        if (count <= 15)
         {
-            g =Instantiate(woodPrefab,woodCreateArea.position,Quaternion.identity);
-            yield return new WaitForSeconds(1f);
-
-            g.transform.DOMove(target.transform.position, 1f).SetEase(Ease.InOutSine).OnComplete(()=>{
-                
+            g = Instantiate(woodPrefab, woodCreateArea.position, woodCreateArea.rotation);
+            count += 1;
+            g.transform.DOMove(target.transform.position, 1f).SetEase(Ease.InOutSine).OnComplete(() =>
+            {
                 WoodCollecter.Instance.WoodCollection();
             });
+            yield return new WaitForSeconds(0.5f);
+
         }
     }
-
-   
-
 }

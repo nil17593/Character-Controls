@@ -10,6 +10,7 @@ public class WoodSelling : MonoBehaviour
         if (other.gameObject.GetComponent<CharacterMovement>() != null)
         {
             WoodCollecter.Instance.SellWood();
+            BuyWood.count = 0;
         }
     }
 }

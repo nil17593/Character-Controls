@@ -137,16 +137,19 @@ public class WoodCollecter : MonoBehaviour
 
     void RemoveWoods()
     {
-        Destroy(woods[woods.Count - 1].gameObject);
-        if (woods.Count <= 8)
+        if (woods.Count > 0)
         {
-            height -= 0.9f;
+            Destroy(woods[woods.Count - 1].gameObject);
+            if (woods.Count <= 8)
+            {
+                height -= 0.9f;
+            }
+            if (woods.Count > 8)
+            {
+                height2 -= 0.8f;
+            }
+            woods.RemoveAt(woods.Count - 1);
         }
-        if (woods.Count > 8)
-        {
-            height2 -= 0.8f;
-        }
-        woods.RemoveAt(woods.Count - 1);
 
         Debug.Log("REMOVELIST FUNCTION  "+woodCount);
     }
