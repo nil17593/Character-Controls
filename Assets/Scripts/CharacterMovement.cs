@@ -14,6 +14,8 @@ public class CharacterMovement : MonoBehaviour
     [SerializeField]
     private Vector3 rotationSpeed = new Vector3(0, 40, 0);
     [SerializeField] private Transform FootSteps;
+    [SerializeField]
+     private FixedJoystick fixedJoystick;
     private Rigidbody rb;
     #endregion
 
@@ -38,7 +40,7 @@ public class CharacterMovement : MonoBehaviour
     private GameObject childprefab;
     private Animator animator;
     private Animator woodAnimator;
-    private FixedJoystick fixedJoystick;
+   
     #endregion
 
     #region references of other scripts
@@ -129,7 +131,7 @@ public class CharacterMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("ConnectingPart") && UIManager.Instance.score > 1)
+        if (collision.gameObject.CompareTag("ConnectingPart") && UIManager.Instance.coinScore > 20)
         {
             StartCoroutine(UnlockLand());
         }

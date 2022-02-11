@@ -15,6 +15,8 @@ public class TreeController : MonoBehaviour
     private GameObject woodPrefab;
     [SerializeField]
     private GameObject woodPrefab2;
+    [SerializeField]
+    private Transform target;
 
     #region private components and variables
     private bool logCreate = true;
@@ -87,5 +89,24 @@ public class TreeController : MonoBehaviour
                WoodCollecter.Instance.WoodCollection();
            });
            logCreate = false;   
+    }
+
+    void MoveTowardsTarget(GameObject wood)
+    {
+        if (target == null)
+        {
+            return;
+        }
+        else
+        {
+            wood.transform.DOMove(target.transform.position, 1f).SetEase(Ease.InSine).OnComplete(()=> {
+                ChangePosition(wood);
+            });
+        }
+    }
+
+    void ChangePosition(GameObject wood)
+    {
+        wood.transform.position = this.transform.position;
     }
 }

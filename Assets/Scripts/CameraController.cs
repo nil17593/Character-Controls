@@ -15,7 +15,7 @@ public class CameraController : MonoBehaviour
     //follow player
     void FollowPlayer()
     {
-        if(target != null)
+        if (target != null)
         {
             Vector3 targetPos = target.position + offset;
             Vector3 smoothPos = Vector3.Lerp(transform.position, targetPos, smoothFactor * Time.deltaTime);
@@ -23,9 +23,9 @@ public class CameraController : MonoBehaviour
         }
     }
 
-   
+
     private void LateUpdate()
     {
         FollowPlayer();
-    }
+    } 
 }

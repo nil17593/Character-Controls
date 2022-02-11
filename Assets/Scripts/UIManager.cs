@@ -37,7 +37,7 @@ public class UIManager : MonoBehaviour
 
     //public TextMeshProUGUI progressText;
     [HideInInspector] public int score = 0;
-    private int coinScore;
+    [HideInInspector] public int coinScore;
     //private int progressScore = 0;
     private bool isPaused;
 
@@ -53,6 +53,7 @@ public class UIManager : MonoBehaviour
         menuButton.onClick.AddListener(LoadMenuScene);
         instance = this;
         RefreshUI();
+        RefreshCoinUI();
     }
 
 
@@ -94,7 +95,7 @@ public class UIManager : MonoBehaviour
     public void IncreaseCoins(int increament)
     {
         coinScore += increament;
-        RefreshUI();
+        RefreshCoinUI();
     }
 
     public void DecreaseScore(int decreament)
@@ -107,6 +108,11 @@ public class UIManager : MonoBehaviour
     private void RefreshUI()
     {
         woodText.text =  ""+ score;
+    }
+
+    private void RefreshCoinUI()
+    {
+        coinText.text = "" + coinScore;
     }
 
     //update progress bar

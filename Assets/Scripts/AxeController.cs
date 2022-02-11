@@ -29,8 +29,7 @@ public class AxeController : MonoBehaviour
     //reduce tree size while trigger with tree
     private void OnTriggerEnter(Collider other)
     {
-        TreeController tree = other.transform.GetComponent<TreeController>();
-       
+        TreeController tree = other.transform.GetComponent<TreeController>();      
         if (tree != null)
         {
             tree.ReduceSize();

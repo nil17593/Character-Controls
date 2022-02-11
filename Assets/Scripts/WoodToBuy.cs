@@ -8,4 +8,6 @@ public class WoodToBuy : MonoBehaviour
     {
         Destroy(gameObject, 2f);
     } 
+
+
 }

@@ -16,10 +16,11 @@ public class WoodCollecter : MonoBehaviour
     private float height = 0f;
     private float height2 = 0f;
     private GameObject go;
-    private List<GameObject> woods;
+    public static List<GameObject> woods;
     private int count2;
     private Vector3 tempPos;
     private Vector3 temp;
+    
     #endregion
 
     [Header("Collected wood by player")]
@@ -103,10 +104,9 @@ public class WoodCollecter : MonoBehaviour
 
     public void SellWood()
     {
-        if (woodList.Count > 0)
+        if (woodList.Count > 0 )
         {
             RemoveList();
-            //ResetWoodInstantiation();
         }
     }
 
@@ -117,17 +117,17 @@ public class WoodCollecter : MonoBehaviour
         UIManager.Instance.IncreaseCoins(1);
         if (woodList.Count <= woods.Count)
         {
-           StartCoroutine (DoAnimateWoods());
+           StartCoroutine(DoAnimateWoods());
         }
     }
 
     
-    private IEnumerator DoAnimateWoods()
+    public IEnumerator DoAnimateWoods()
     {
         for(int i = woods.Count - 1; i >= 0; i--)
         {
             yield return new WaitForSeconds(0.1f);
-            woods[i].gameObject.transform.DOMove(woodCollectionArea.transform.position, 0.8f).SetEase(Ease.InOutSine).OnComplete(() =>
+            woods[i].gameObject.transform.DOMove(woodCollectionArea.transform.position, 0.8f).SetEase(Ease.OutCubic).OnComplete(() =>
               {
                   RemoveWoods();
               });
@@ -139,7 +139,7 @@ public class WoodCollecter : MonoBehaviour
     {
         if (woods.Count > 0)
         {
-            Destroy(woods[woods.Count - 1].gameObject);
+            DestroyImmediate(woods[woods.Count - 1].gameObject);
             if (woods.Count <= 8)
             {
                 height -= 0.9f;
@@ -150,7 +150,6 @@ public class WoodCollecter : MonoBehaviour
             }
             woods.RemoveAt(woods.Count - 1);
         }
-
         Debug.Log("REMOVELIST FUNCTION  "+woodCount);
     }
 
@@ -161,4 +160,7 @@ public class WoodCollecter : MonoBehaviour
         temp = WoodInstantiateArea2.transform.position;
         tempPos = woodCollectionArea.transform.position;
     }
+
+
+
 }

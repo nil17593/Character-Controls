@@ -13,7 +13,6 @@ public class BuyWood : MonoBehaviour
     [SerializeField] 
     private Transform target;
 
-    private GameObject[] woodArray;
     private bool isPlayercolliding = false;
     private float timer = 1f;
     public static int count = 0;
@@ -43,7 +42,6 @@ public class BuyWood : MonoBehaviour
         if (collision.gameObject.GetComponent<CharacterMovement>() != null && isPlayercolliding == true)
         {
             StartCoroutine(GenerateWoodToBuy());
-            //count = 0;
         }
     }
 
@@ -54,16 +52,19 @@ public class BuyWood : MonoBehaviour
 
     IEnumerator GenerateWoodToBuy()
     {
-        if (count <= 15)
+        if (count <= 16)
         {
             g = Instantiate(woodPrefab, woodCreateArea.position, woodCreateArea.rotation);
             count += 1;
-            g.transform.DOMove(target.transform.position, 1f).SetEase(Ease.InOutSine).OnComplete(() =>
+            g.transform.DOMove(target.transform.position, 1f).SetEase(Ease.OutCubic).OnComplete(() =>
             {
                 WoodCollecter.Instance.WoodCollection();
             });
-            yield return new WaitForSeconds(0.5f);
-
+            yield return new WaitForSeconds(5f);
+        }
+        else
+        {
+            count++;
         }
     }
 }
