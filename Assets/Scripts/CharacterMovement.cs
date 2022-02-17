@@ -13,7 +13,7 @@ public class CharacterMovement : MonoBehaviour
     private float movementSpeed = 15f;
     [SerializeField]
     private Vector3 rotationSpeed = new Vector3(0, 40, 0);
-    [SerializeField] private Transform FootSteps;
+    //[SerializeField] private Transform FootSteps;
     [SerializeField]
      private FixedJoystick fixedJoystick;
     private Rigidbody rb;

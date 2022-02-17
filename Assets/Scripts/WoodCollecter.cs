@@ -8,19 +8,19 @@ using DG.Tweening;
 /// the collected wood is instantiated in given area
 /// the integer list is holds the counts of a collected wood 
 /// </summary>
-public class WoodCollecter : MonoBehaviour
+public class WoodCollecter : MonoBehaviour//IpooledObject
 {
     #region private Components
-    private List<int> woodList = null;
+    private List<int> woodList;
     private int woodCount = 0;
     private float height = 0f;
     private float height2 = 0f;
     private GameObject go;
-    public static List<GameObject> woods;
+    private List<GameObject> woods;
     private int count2;
     private Vector3 tempPos;
     private Vector3 temp;
-    
+    private bool isWoodCountEmpty;
     #endregion
 
     [Header("Collected wood by player")]
@@ -52,16 +52,19 @@ public class WoodCollecter : MonoBehaviour
     //wood collection by player 
     public void WoodCollection()
     {
-        if (woodList.Count <= 16)
+        if (woods.Count <= 16)
         {
-            go = Instantiate(WoodPrefab);
+            go = ObjectPooler.Instance.GetPooledObject();
             woods.Add(go.gameObject);
-            woodList.Add(1);
+            //woodList.Add(1);
+            woodCount += 1;
+            Debug.Log("wqods Count =" + woods.Count);
             if (woods.Count <= 8)
             {
                 go.transform.position = WoodInstantiateArea.transform.position;
                 go.transform.rotation = WoodInstantiateArea.transform.rotation;
                 go.transform.SetParent(WoodInstantiateArea.transform);
+                go.SetActive(true);
                 tempPos = WoodInstantiateArea.transform.position;
                 tempPos.y += height;
                 go.transform.position = tempPos;
@@ -77,6 +80,7 @@ public class WoodCollecter : MonoBehaviour
                 go.transform.position = WoodInstantiateArea2.transform.position;
                 go.transform.rotation = WoodInstantiateArea2.transform.rotation;
                 go.transform.SetParent(WoodInstantiateArea2.transform);
+                go.SetActive(true);
                 temp = WoodInstantiateArea2.transform.position;// + new Vector3(0f, -2f, 0f);
                 temp.y += height2;
                 go.transform.position = temp;
@@ -89,22 +93,21 @@ public class WoodCollecter : MonoBehaviour
         }
         else
         {
-            woodList.Add(1);
+            //woods.Add(1);
+            Debug.Log("Wood Count= " + woods.Count);
+            Debug.Log("WoodList Count= " + woodList.Count);
+            woodCount += 1;
             UIManager.Instance.value += 1;
             UIManager.Instance.pb.BarValue += 0.5f;
             UIManager.Instance.IncreaseScore(1);
             Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
-            //height = 0f;
-            //height2 = 0f;
-            Debug.Log("1: "+height);
-            Debug.Log("2: " + height2);
-
         }
     }
 
+
     public void SellWood()
     {
-        if (woodList.Count > 0 )
+        if (woodCount > 0 )
         {
             RemoveList();
         }
@@ -112,10 +115,11 @@ public class WoodCollecter : MonoBehaviour
 
     private void RemoveList()
     {
-        woodList.RemoveAt(woodList.Count - 1);
+        woodCount -= 1;
+        Debug.Log("WoodCount " + woodCount);
         UIManager.Instance.DecreaseScore(1);
         UIManager.Instance.IncreaseCoins(1);
-        if (woodList.Count <= woods.Count)
+        if (woodCount <= woods.Count)
         {
            StartCoroutine(DoAnimateWoods());
         }
@@ -124,22 +128,23 @@ public class WoodCollecter : MonoBehaviour
     
     public IEnumerator DoAnimateWoods()
     {
-        for(int i = woods.Count - 1; i >= 0; i--)
+        for(int i = woods.Count-1; i > 0; i--)
         {
+            Debug.Log("i ="+i);
             yield return new WaitForSeconds(0.1f);
             woods[i].gameObject.transform.DOMove(woodCollectionArea.transform.position, 0.8f).SetEase(Ease.OutCubic).OnComplete(() =>
-              {
+            {
                   RemoveWoods();
-              });
+            });
         }
     }
 
 
     void RemoveWoods()
     {
-        if (woods.Count > 0)
+        if (woods.Count > 0 && woodCount<=woods.Count)
         {
-            DestroyImmediate(woods[woods.Count - 1].gameObject);
+            woods[woods.Count - 1].gameObject.SetActive(false);
             if (woods.Count <= 8)
             {
                 height -= 0.9f;
@@ -150,17 +155,6 @@ public class WoodCollecter : MonoBehaviour
             }
             woods.RemoveAt(woods.Count - 1);
         }
-        Debug.Log("REMOVELIST FUNCTION  "+woodCount);
+        Debug.Log("REMOVELIST FUNCTION  " + woodCount);
     }
-
-    void ResetWoodInstantiation()
-    {
-        height = 0f;
-        height2 = 0f;
-        temp = WoodInstantiateArea2.transform.position;
-        tempPos = woodCollectionArea.transform.position;
-    }
-
-
-
 }
