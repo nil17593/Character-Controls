@@ -52,13 +52,11 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
     //wood collection by player 
     public void WoodCollection()
     {
-        if (woods.Count <= 16)
+        if (woods.Count <= 15)
         {
             go = ObjectPooler.Instance.GetPooledObject();
             woods.Add(go.gameObject);
-            //woodList.Add(1);
-            woodCount += 1;
-            Debug.Log("wqods Count =" + woods.Count);
+            woodList.Add(1);
             if (woods.Count <= 8)
             {
                 go.transform.position = WoodInstantiateArea.transform.position;
@@ -75,13 +73,13 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
                 Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
             }
 
-            else //if (woodCount > 10)
+            else
             {
                 go.transform.position = WoodInstantiateArea2.transform.position;
                 go.transform.rotation = WoodInstantiateArea2.transform.rotation;
                 go.transform.SetParent(WoodInstantiateArea2.transform);
                 go.SetActive(true);
-                temp = WoodInstantiateArea2.transform.position;// + new Vector3(0f, -2f, 0f);
+                temp = WoodInstantiateArea2.transform.position;
                 temp.y += height2;
                 go.transform.position = temp;
                 height2 += 0.8f;
@@ -93,10 +91,9 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
         }
         else
         {
-            //woods.Add(1);
+            woodList.Add(1);
             Debug.Log("Wood Count= " + woods.Count);
             Debug.Log("WoodList Count= " + woodList.Count);
-            woodCount += 1;
             UIManager.Instance.value += 1;
             UIManager.Instance.pb.BarValue += 0.5f;
             UIManager.Instance.IncreaseScore(1);
@@ -107,7 +104,7 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
 
     public void SellWood()
     {
-        if (woodCount > 0 )
+        if (woodList.Count > 0 )
         {
             RemoveList();
         }
@@ -115,11 +112,11 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
 
     private void RemoveList()
     {
-        woodCount -= 1;
+        woodList.RemoveAt(woodList.Count - 1);
         Debug.Log("WoodCount " + woodCount);
         UIManager.Instance.DecreaseScore(1);
         UIManager.Instance.IncreaseCoins(1);
-        if (woodCount <= woods.Count)
+        if (woodList.Count == 0)
         {
            StartCoroutine(DoAnimateWoods());
         }
@@ -142,7 +139,7 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
 
     void RemoveWoods()
     {
-        if (woods.Count > 0 && woodCount<=woods.Count)
+        if (woods.Count > 0)
         {
             woods[woods.Count - 1].gameObject.SetActive(false);
             if (woods.Count <= 8)

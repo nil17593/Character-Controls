@@ -56,6 +56,7 @@ public class BuyWood : MonoBehaviour
         {
             g = Instantiate(woodPrefab, woodCreateArea.position, woodCreateArea.rotation);
             count += 1;
+            Debug.Log("WOOD SELLING= "+count);
             g.transform.DOMove(target.transform.position, 1f).SetEase(Ease.OutCubic).OnComplete(() =>
             {
                 WoodCollecter.Instance.WoodCollection();
