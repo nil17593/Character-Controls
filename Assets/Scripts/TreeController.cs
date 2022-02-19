@@ -10,20 +10,13 @@ using System.Collections.Generic;
 /// </summary>
 public class TreeController : MonoBehaviour
 {
-    [Header("wood prefabs to animate")]
-    [SerializeField]
-    private GameObject woodPrefab;
-    [SerializeField]
-    private GameObject woodPrefab2;
-    [SerializeField]
-    private Transform target;
-
     #region private components and variables
     private bool logCreate = true;
     //private CapsuleCollider boxCollider;
     #endregion
 
-
+    private GameObject wood;
+    private GameObject wood2;
     private static TreeController instance;
     public static TreeController Instance { get { return instance; } }
 
@@ -31,14 +24,13 @@ public class TreeController : MonoBehaviour
     private void Start()
     {
         instance = this;
-        //boxCollider = GetComponentInChildren<CapsuleCollider>();
     }
 
     //coroutine for destroy woods
     IEnumerator DestroyWood(GameObject wood)
     {
         yield return new WaitForSeconds(0.4f);
-        Destroy(wood);
+        wood.SetActive(false);
         logCreate = true;
     }
 
@@ -54,21 +46,18 @@ public class TreeController : MonoBehaviour
             {
                 DoAnimateWoods();
             }
-            //if (transform.localScale.y <= 2f)
-            //{
-            //    Debug.Log("aya");
-            //    boxCollider = null;
-            //}
         }
     }
 
     //animate woods using doTween
     void DoAnimateWoods()
     {
-        GameObject wood = Instantiate(woodPrefab);
-        GameObject wood2 = Instantiate(woodPrefab);
+        wood = FloatingWoodObjectPooler.Instance.GetFloatingPooledObject();
+        wood2 = FloatingWoodObjectPooler.Instance.GetFloatingPooledObject2();
         wood.gameObject.transform.position = this.transform.position + new Vector3(0f, -2f, 0f);
+        wood.SetActive(true);
         wood2.gameObject.transform.position = this.transform.position + new Vector3(0f, -2f, 0f);
+        wood2.SetActive(true);
 
         wood.gameObject.transform.DOLocalJump(
             endValue: wood.transform.position + new Vector3(2f, 2f, 1.5f),
@@ -76,6 +65,7 @@ public class TreeController : MonoBehaviour
             numJumps: 1,
             duration: 1f).SetEase(Ease.OutBack).OnComplete(()=> {
                 StartCoroutine(DestroyWood(wood));
+                //Wood1MoveTowardsPlayer(target);
                 WoodCollecter.Instance.WoodCollection();
     });
 
@@ -86,27 +76,40 @@ public class TreeController : MonoBehaviour
            duration: 1f).SetEase(Ease.OutBack).OnComplete(() =>
            {
                StartCoroutine(DestroyWood(wood2));
+               //Wood2MoveTowardsPlayer(target);
                WoodCollecter.Instance.WoodCollection();
            });
            logCreate = false;   
     }
 
-    void MoveTowardsTarget(GameObject wood)
-    {
-        if (target == null)
-        {
-            return;
-        }
-        else
-        {
-            wood.transform.DOMove(target.transform.position, 1f).SetEase(Ease.InSine).OnComplete(()=> {
-                ChangePosition(wood);
-            });
-        }
-    }
+    //void Wood1MoveTowardsPlayer(Transform target)
+    //{
+    //    float dist = Vector3.Distance(target.transform.position ,wood.transform.position);
+    //    Debug.Log("Dist1= " + dist);
+    //    if (dist < 10f)
+    //    {
+    //        wood.transform.DOMove(target.transform.position, 0.5f).SetEase(Ease.OutBack).OnComplete(()=> {
+    //            wood.gameObject.SetActive(false);
+    //        });
+    //    }
+        
+    //    else
+    //    {
+    //        wood.transform.DORotate(wood.transform.position, 5f, RotateMode.Fast);
+    //    }
+    //} 
 
-    void ChangePosition(GameObject wood)
-    {
-        wood.transform.position = this.transform.position;
-    }
+    //void Wood2MoveTowardsPlayer(Transform target)
+    //{
+    //    float dist2 = Vector3.Distance(target.transform.position, wood2.transform.position);
+    //    Debug.Log("Dist2= " + dist2);
+
+    //    if (dist2 < 10f)
+    //    {
+    //        wood2.transform.DOMove(target.transform.position, 0.5f).SetEase(Ease.OutBack).OnComplete(() => {
+    //            wood2.gameObject.SetActive(false);
+    //        });
+    //    }
+    //    wood2.transform.DORotate(wood2.transform.position, 5f, RotateMode.Fast);
+    //}
 }

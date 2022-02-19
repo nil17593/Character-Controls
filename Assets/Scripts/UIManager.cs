@@ -104,6 +104,12 @@ public class UIManager : MonoBehaviour
         RefreshUI();
     }
 
+    public void DecreaseCoinScore(int decreament)
+    {
+        coinScore -= decreament;
+        RefreshCoinUI();
+    }
+
     //refresh text
     private void RefreshUI()
     {

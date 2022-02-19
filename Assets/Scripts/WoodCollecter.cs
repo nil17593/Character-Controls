@@ -10,12 +10,16 @@ using DG.Tweening;
 /// </summary>
 public class WoodCollecter : MonoBehaviour//IpooledObject
 {
+    #region Other scripts references
+    public WoodSelling woodSelling;
+    #endregion
+
     #region private Components
     private List<int> woodList;
     private int woodCount = 0;
     private float height = 0f;
     private float height2 = 0f;
-    private GameObject go;
+    private GameObject wood;
     private List<GameObject> woods;
     private int count2;
     private Vector3 tempPos;
@@ -54,39 +58,40 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
     {
         if (woods.Count <= 15)
         {
-            go = ObjectPooler.Instance.GetPooledObject();
-            woods.Add(go.gameObject);
+            wood = ObjectPooler.Instance.GetPooledObject();
+            woods.Add(wood.gameObject);
             woodList.Add(1);
+            UIManager.Instance.value += 1;
+            UIManager.Instance.pb.BarValue += 0.5f;
+            UIManager.Instance.IncreaseScore(1);
             if (woods.Count <= 8)
             {
-                go.transform.position = WoodInstantiateArea.transform.position;
-                go.transform.rotation = WoodInstantiateArea.transform.rotation;
-                go.transform.SetParent(WoodInstantiateArea.transform);
-                go.SetActive(true);
+                wood.transform.SetParent(WoodInstantiateArea.transform);
+                wood.transform.position = WoodInstantiateArea.transform.position;
+                wood.transform.rotation = WoodInstantiateArea.transform.rotation;              
+                wood.SetActive(true);
                 tempPos = WoodInstantiateArea.transform.position;
                 tempPos.y += height;
-                go.transform.position = tempPos;
+                wood.transform.position = tempPos;
                 height += 0.9f;
-                UIManager.Instance.value += 1;
-                UIManager.Instance.pb.BarValue += 0.5f;
-                UIManager.Instance.IncreaseScore(1);
                 Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
+                //GenerateFloatingPoint();
+                //DisableFloatingPoints();
             }
 
             else
             {
-                go.transform.position = WoodInstantiateArea2.transform.position;
-                go.transform.rotation = WoodInstantiateArea2.transform.rotation;
-                go.transform.SetParent(WoodInstantiateArea2.transform);
-                go.SetActive(true);
+                wood.transform.SetParent(WoodInstantiateArea2.transform);
+                wood.transform.position = WoodInstantiateArea2.transform.position;
+                wood.transform.rotation = WoodInstantiateArea2.transform.rotation;              
+                wood.SetActive(true);
                 temp = WoodInstantiateArea2.transform.position;
                 temp.y += height2;
-                go.transform.position = temp;
+                wood.transform.position = temp;
                 height2 += 0.8f;
-                UIManager.Instance.value += 1;
-                UIManager.Instance.pb.BarValue += 0.5f;
-                UIManager.Instance.IncreaseScore(1);
                 Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
+                //GenerateFloatingPoint();
+                //DisableFloatingPoints();
             }
         }
         else
@@ -98,15 +103,39 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
             UIManager.Instance.pb.BarValue += 0.5f;
             UIManager.Instance.IncreaseScore(1);
             Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
+            //GenerateFloatingPoint();
+            //DisableFloatingPoints();
         }
     }
 
 
+    void GenerateFloatingPoint()
+    {
+        FloatingPoint = FloatingWoodObjectPooler.Instance.GetFloatingPooledObject();
+        FloatingPoint.transform.position = FlotObject.transform.position;
+        FloatingPoint.transform.rotation = Quaternion.identity;
+        FloatingPoint.SetActive(true);
+    }
+
+    IEnumerator DisableFloatingPoints()
+    {
+        yield return new WaitForSeconds(2f);
+        FloatingPoint.SetActive(false);
+    }
+
     public void SellWood()
     {
-        if (woodList.Count > 0 )
+        //if (woods.Count>0 || woodList.Count > 0 && woodSelling.isPlayercolliding)
+        //{
+        //    RemoveList();
+        //}
+        if (woodList.Count > 0)
         {
             RemoveList();
+        }
+        else
+        {
+            return;
         }
     }
 
@@ -125,14 +154,21 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
     
     public IEnumerator DoAnimateWoods()
     {
-        for(int i = woods.Count-1; i > 0; i--)
+        for(int i = woods.Count-1; i >= 0; i--)
         {
             Debug.Log("i ="+i);
-            yield return new WaitForSeconds(0.1f);
-            woods[i].gameObject.transform.DOMove(woodCollectionArea.transform.position, 0.8f).SetEase(Ease.OutCubic).OnComplete(() =>
-            {
-                  RemoveWoods();
-            });
+            //if(woodSelling.isPlayercolliding)
+            //{
+                yield return new WaitForSeconds(0.1f);
+                woods[i].gameObject.transform.DOMove(woodCollectionArea.transform.position, 0.8f).SetEase(Ease.OutCubic).OnComplete(() =>
+                {
+                    RemoveWoods();
+                });
+            //}
+            //else
+            //{
+            //    yield return null;
+            //}
         }
     }
 

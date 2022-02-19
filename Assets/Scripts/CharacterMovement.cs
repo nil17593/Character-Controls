@@ -133,6 +133,7 @@ public class CharacterMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ConnectingPart") && UIManager.Instance.coinScore > 20)
         {
+            UIManager.Instance.DecreaseCoinScore(20);
             StartCoroutine(UnlockLand());
         }
 
