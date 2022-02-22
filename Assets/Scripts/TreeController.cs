@@ -17,6 +17,7 @@ public class TreeController : MonoBehaviour
 
     private GameObject wood;
     private GameObject wood2;
+    public static bool isNULL = false;
     private static TreeController instance;
     public static TreeController Instance { get { return instance; } }
 
@@ -24,6 +25,14 @@ public class TreeController : MonoBehaviour
     private void Start()
     {
         instance = this;
+    }
+
+    private void Update()
+    {
+        if (this.transform.localScale.y < 2f)
+        {
+            isNULL = true;
+        }
     }
 
     //coroutine for destroy woods
@@ -81,6 +90,9 @@ public class TreeController : MonoBehaviour
            });
            logCreate = false;   
     }
+
+
+
 
     //void Wood1MoveTowardsPlayer(Transform target)
     //{
