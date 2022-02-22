@@ -11,17 +11,20 @@ namespace AI
         private TreeController treeController;
         //[SerializeField]
         //private LayerMask whatisTree, whatIsGround;
-        [SerializeField]
-        private Transform Destination;
+        //[SerializeField]
+        //private Transform Destination;
         //[SerializeField]
         private Rigidbody Rigidbody;
 
         private Animator animator;
         public bool cutting = false;
         public bool running;
+        [SerializeField]
         private GameObject[] targets;
         private int i = 0;
         public bool reached = false;
+
+        private float timer = 15f;
 
 
         void Start()
@@ -29,19 +32,24 @@ namespace AI
             navMeshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
             targets = GameObject.FindGameObjectsWithTag("Tree");
-            navMeshAgent.destination = Destination.transform.position;
+            //navMeshAgent.destination = Destination.transform.position;
+            //navMeshAgent.SetDestination(targets[i].transform.position);
+            navMeshAgent.destination = targets[i].transform.position;
         }
 
 
         void Update()
         {
-            //float dist = Vector3.Distance(transform.position, Destination.position);
-            //if (dist <= 2f)
-            //{
-            //    navMeshAgent.isStopped = true;
-            //    Debug.Log("dist= " + dist);
-            //    CuttingTree();
-            //}
+            float dist = Vector3.Distance(targets[i].transform.position, transform.position);
+            if (dist < 5f)
+            {
+                i++;
+                if (i < targets.Length)
+                {
+                    navMeshAgent.isStopped = false;
+                    navMeshAgent.destination = targets[i].transform.position; //go to next target by setting it as the new destination
+                }
+            }
             if (!reached)
             {
                 running = true;
@@ -62,9 +70,8 @@ namespace AI
         void CuttingTree()
         {
             //navMeshAgent.speed = 0f;
-            if (cutting == true && reached==true)
-            {
-                navMeshAgent.isStopped = true;
+            if (cutting == true && reached==true && navMeshAgent.isStopped==true)
+            {              
                 //navMeshAgent.velocity.magnitude = null;
                 animator.SetBool("AIIdle", false);
                 animator.SetBool("AIRunning", false);
@@ -80,8 +87,9 @@ namespace AI
                 cutting = true;
                 reached = true;
                 running = false;
+                navMeshAgent.isStopped = true;
                 //navMeshAgent.speed = 0f;
-                navMeshAgent.transform.LookAt(Destination.gameObject.transform.position);
+                //navMeshAgent.transform.LookAt(Destination.gameObject.transform.position);
                 CuttingTree();
             }
             Debug.Log("yyy " + other.gameObject.name);

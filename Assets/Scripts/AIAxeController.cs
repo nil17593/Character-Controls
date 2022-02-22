@@ -8,6 +8,7 @@ namespace AI
         #region refereance of other scripts
         private TreeController treeController;
         #endregion
+        public static bool aiAXE;
 
 
         //reduce tree size while trigger with tree
@@ -16,6 +17,7 @@ namespace AI
             TreeController tree = other.transform.GetComponent<TreeController>();
             if (tree != null)
             {
+                aiAXE = true;
                 tree.ReduceSize();
                 //AIWoodCollecter.Instance.WoodCollection();
             }

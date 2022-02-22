@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using AI;
 using System.Collections.Generic;
 
 
@@ -31,6 +32,7 @@ public class TreeController : MonoBehaviour
     {
         if (this.transform.localScale.y < 2f)
         {
+            //Debug.Log("LOCALSCALE= " + this.transform.localScale.y);
             isNULL = true;
         }
     }
@@ -92,7 +94,13 @@ public class TreeController : MonoBehaviour
     }
 
 
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<AIAxeController>())
+        {
+            AIWoodCollecter.Instance.WoodCollection();
+        }
+    }
 
     //void Wood1MoveTowardsPlayer(Transform target)
     //{
@@ -104,7 +112,7 @@ public class TreeController : MonoBehaviour
     //            wood.gameObject.SetActive(false);
     //        });
     //    }
-        
+
     //    else
     //    {
     //        wood.transform.DORotate(wood.transform.position, 5f, RotateMode.Fast);
