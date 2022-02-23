@@ -60,7 +60,7 @@ namespace AI
         {
             if (AIAxeController.aiAXE==true && woods.Count <= 15)
             {
-                wood = Instantiate(WoodPrefab);
+                wood = Instantiate(WoodPrefab) as GameObject;
                 woods.Add(wood.gameObject);
                 if (woods.Count <= 8)
                 {
@@ -70,7 +70,7 @@ namespace AI
                     tempPos = WoodInstantiateArea.transform.position;
                     tempPos.y += height;
                     wood.transform.position = tempPos;
-                    height += 0.9f;
+                    height += 0.5f;
                 }
 
                 else
@@ -81,7 +81,7 @@ namespace AI
                     temp = WoodInstantiateArea2.transform.position;
                     temp.y += height2;
                     wood.transform.position = temp;
-                    height2 += 0.8f;
+                    height2 += 0.5f;
                 }
             }
         }

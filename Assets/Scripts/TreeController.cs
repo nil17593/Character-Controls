@@ -19,20 +19,27 @@ public class TreeController : MonoBehaviour
     private GameObject wood;
     private GameObject wood2;
     public static bool isNULL = false;
-    private static TreeController instance;
-    public static TreeController Instance { get { return instance; } }
+    public static bool isCollectedBYAI=false;
+    public CapsuleCollider hitBoxCollider;
+    //private bool isCollectedByPlayer=false;
+    //private static TreeController instance;
+    //public static TreeController Instance { get { return instance; } }
 
 
     private void Start()
     {
-        instance = this;
+        hitBoxCollider = GetComponentInChildren<CapsuleCollider>();
+        isNULL = false;
+        //instance = this;
     }
 
     private void Update()
     {
-        if (this.transform.localScale.y < 2f)
+        if (this.transform.localScale.y < 0.2f)
         {
+            //hitBoxCollider.enabled = false;
             //Debug.Log("LOCALSCALE= " + this.transform.localScale.y);
+            Debug.Log("LOCALSCALE Y= " + transform.localScale.y);
             isNULL = true;
         }
     }
@@ -77,8 +84,16 @@ public class TreeController : MonoBehaviour
             duration: 1f).SetEase(Ease.OutBack).OnComplete(()=> {
                 StartCoroutine(DestroyWood(wood));
                 //Wood1MoveTowardsPlayer(target);
-                WoodCollecter.Instance.WoodCollection();
-    });
+                //if (isCollectedBYAI)
+                //{
+                //    AIWoodCollecter.Instance.WoodCollection();
+                //}
+                //else if(isCollectedByPlayer)
+                //{
+                    //Wood2MoveTowardsPlayer(target);
+                    WoodCollecter.Instance.WoodCollection();
+                //}
+            });
 
         wood2.gameObject.transform.DOLocalJump(
            endValue: wood2.transform.position + new Vector3(-2f, 2f, 1.5f),
@@ -87,19 +102,32 @@ public class TreeController : MonoBehaviour
            duration: 1f).SetEase(Ease.OutBack).OnComplete(() =>
            {
                StartCoroutine(DestroyWood(wood2));
-               //Wood2MoveTowardsPlayer(target);
-               WoodCollecter.Instance.WoodCollection();
+               //if (isCollectedBYAI)
+               //{
+               //    AIWoodCollecter.Instance.WoodCollection();
+               //}
+               //else if(isCollectedByPlayer)
+               //{
+                   //Wood2MoveTowardsPlayer(target);
+                   WoodCollecter.Instance.WoodCollection();
+               //}
            });
            logCreate = false;   
     }
 
 
+    
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.GetComponent<AIAxeController>())
+        if (other.gameObject.GetComponent<AIAxeController>() != null)
         {
-            AIWoodCollecter.Instance.WoodCollection();
+            AIWoodCollecter.Instance.WoodCollection();           
         }
+        //else if (other.gameObject.GetComponent<AxeController>() != null)
+        //{
+        //    isCollectedByPlayer = true;
+        //}
     }
 
     //void Wood1MoveTowardsPlayer(Transform target)
