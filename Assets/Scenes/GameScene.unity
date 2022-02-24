@@ -1375,7 +1375,7 @@ GameObject:
   m_Name: TreeBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &249181286
@@ -7016,7 +7016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b06ce434ae589de4d946c9582d159567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 2396153356820712365}
+  target: {fileID: 1504525724}
   offset: {x: 0, y: 50, z: -30}
   smoothFactor: 0
 --- !u!114 &963194230
@@ -7160,7 +7160,7 @@ GameObject:
   m_Name: Hit Area
   m_TagString: Tree
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &987582591
@@ -7286,7 +7286,7 @@ GameObject:
   m_Name: TreeBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1009244709
@@ -10035,10 +10035,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.2184654
+  m_Radius: 0.15229177
   m_Height: 2.22
   m_Direction: 1
-  m_Center: {x: 0.051324528, y: 1.2102842, z: -0.0055194697}
+  m_Center: {x: 0.051324528, y: 1.2102842, z: -0.07169311}
 --- !u!195 &1504525722
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10048,12 +10048,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 1504525720}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.38
+  m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -10107,9 +10107,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1504525720}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 4.24
+  m_Drag: 2.98
+  m_AngularDrag: 5.27
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
@@ -11517,7 +11517,7 @@ GameObject:
   m_Name: Hit Area
   m_TagString: Tree
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1747864442
@@ -11830,7 +11830,7 @@ GameObject:
   m_Name: TreeBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1835837390
@@ -11912,7 +11912,7 @@ GameObject:
   m_Name: Hit Area
   m_TagString: Tree
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1837960472
@@ -12979,7 +12979,7 @@ GameObject:
   m_Name: TreeBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2004860383
@@ -13592,7 +13592,7 @@ GameObject:
   m_Name: Hit Area
   m_TagString: Tree
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
+  m_NavMeshLayer: 1
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2103280301

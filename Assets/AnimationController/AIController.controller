@@ -210,6 +210,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: AIIdle
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: AIRunning
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3837226902270195450}
   m_Solo: 0

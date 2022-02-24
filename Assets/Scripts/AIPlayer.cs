@@ -18,18 +18,30 @@ namespace AI
         private GameObject[] targets;
         public int i = 4;
         public bool reached = false;
-        private float timer = 15f;
-
+        //private float timer = 15f;
+        //private Rigidbody rb;
+        public GameObject t1;
+        public GameObject t2;
 
         void Start()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
-            navMeshAgent.SetDestination(targets[i].transform.position);
+            //transform.position = navMeshAgent.nextPosition;
+            navMeshAgent.SetDestination(t1.transform.position);
+            //NextTarget();
         }
 
         void FixedUpdate()
         {
+            //float dist = Vector3.Distance(transform.position, targets[i].transform.position);
+            //if (dist <= 10f)
+            //{
+            //    navMeshAgent.isStopped = true;
+            //    reached = true;
+            //    cutting = true;
+            //    CuttingTree();
+            //}
             NextTarget();
             MovingTowardsTarget();           
         }
@@ -39,6 +51,8 @@ namespace AI
             if (!reached)
             {
                 running = true;
+                cutting = false;
+                navMeshAgent.isStopped = false;
                 animator.SetBool("AIRunning", true);
                 animator.SetBool("AIIdle", false);
                 animator.SetBool("AICutting", false);
@@ -49,39 +63,57 @@ namespace AI
         {
             if (TreeController.isNULL == true)
             {
-                navMeshAgent.ResetPath();
                 Debug.Log("II= " + i);
                 reached = false;
+                running = true;
                 navMeshAgent.isStopped = false;
-                navMeshAgent.SetDestination(targets[i + 1].transform.position);
+                Debug.Log("NAV= " + navMeshAgent.isStopped);
+                //TreeController.isNULL = false;
+                //i = (i + 1) % targets.Length;
+                navMeshAgent.SetDestination(t2.transform.position);
+                //if (targets.Length == 0)
+                //    return;
+                //navMeshAgent.destination = targets[i].transform.position;
+                //i = (i + 1) % targets.Length;
             }
         }
 
         public void CuttingTree()
         {
             //navMeshAgent.speed = 0f;
-            if (cutting == true && reached==true && navMeshAgent.isStopped==true)
+            if (cutting == true && reached==true  && running == false)
             {
-                running = false;
                 animator.SetBool("AIIdle", false);
                 animator.SetBool("AIRunning", false);
                 animator.SetBool("AICutting", true);
             }
         }
 
+        public void TurnOnBools()
+        {
+            cutting = true;
+            reached = true;
+            running = false;
+            navMeshAgent.isStopped = true;
+        }
 
         void OnTriggerEnter(Collider other)
         {
             if (other.gameObject.CompareTag("Tree"))
             {
+                navMeshAgent.isStopped = true;
+                Debug.Log(other.gameObject.name);
+                //rb.isKinematic = false;
                 cutting = true;
                 reached = true;
                 running = false;
-                navMeshAgent.isStopped = true;
+                //animator.SetBool("AIRunning", false);
+                Debug.Log("NAV Trigger= "+navMeshAgent.isStopped);
                 CuttingTree();
             }
-            Debug.Log("yyy " + other.gameObject.name);
+            //Debug.Log("yyy " + other.gameObject.name);
         }
+
 
         private void OnTriggerExit(Collider other)
         {
@@ -93,7 +125,7 @@ namespace AI
             }
         }
 
-    
+
 
         void GotoNextPoint()
         {
