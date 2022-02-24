@@ -18,7 +18,7 @@ namespace AI
             if (tree != null)
             {
                 aiAXE = true;
-                tree.ReduceSize();
+                tree.ReduceSizeForAI();
                 //AIWoodCollecter.Instance.WoodCollection();
             }
         }

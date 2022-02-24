@@ -12,39 +12,35 @@ public class AICollision : MonoBehaviour
     [SerializeField]
     private NavMeshAgent NavMeshAgent;
     [SerializeField]
-    private Animator Animator;
-    [SerializeField]
-    private BoxCollider BoxCollider; 
-
+    private GameObject[] targets;
+    private int i=4;
+    public static bool iscollide;
 
     void Start()
     {
         NavMeshAgent = GetComponent<NavMeshAgent>();
-        Animator = GetComponent<Animator>();
-
-        NavMeshAgent.destination = myTarget.transform.position;
-        BoxCollider = GetComponentInChildren<BoxCollider>();
+        NavMeshAgent.destination = targets[i].transform.position;
     }
 
-   
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        RaycastHit hit;
-        Physics.Raycast(transform.position, Vector3.forward,out hit,15f);
-
-        if (hit.collider.gameObject.CompareTag("Tree"))
+        if (other.gameObject.CompareTag("Tree"))
         {
-            //Debug.Log(collision.gameObject.name);
-            Animator.SetBool("AIIdle", false);
-            Animator.SetBool("AIRunning", false);
-            Animator.SetBool("AICutting", true);
+            iscollide = true;
+            NavMeshAgent.isStopped = true;
         }
-
-        //if (NavMeshAgent.velocity.magnitude > 0f)
-        //{
-        //    Animator.SetBool("AIRunning", true);
-        //}
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Tree"))
+        {
+            iscollide = false;
+            NavMeshAgent.isStopped = false;
+        }
+    }
+
+
 
     //private void OnCollisionStay(Collision collision)
     //{

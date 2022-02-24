@@ -18,31 +18,20 @@ public class TreeController : MonoBehaviour
 
     private GameObject wood;
     private GameObject wood2;
-    public static bool isNULL = false;
+    public bool isNULL = false;
     public static bool isCollectedBYAI=false;
-    public CapsuleCollider hitBoxCollider;
     //private bool isCollectedByPlayer=false;
     //private static TreeController instance;
     //public static TreeController Instance { get { return instance; } }
-
+ 
 
     private void Start()
     {
-        hitBoxCollider = GetComponentInChildren<CapsuleCollider>();
         isNULL = false;
+        
         //instance = this;
     }
 
-    private void Update()
-    {
-        if (this.transform.localScale.y < 0.2f)
-        {
-            //hitBoxCollider.enabled = false;
-            //Debug.Log("LOCALSCALE= " + this.transform.localScale.y);
-            Debug.Log("LOCALSCALE Y= " + transform.localScale.y);
-            isNULL = true;
-        }
-    }
 
     //coroutine for destroy woods
     IEnumerator DestroyWood(GameObject wood)
@@ -59,6 +48,33 @@ public class TreeController : MonoBehaviour
         if (this.transform.localScale.y >= 0f)
         {
             this.transform.localScale -= reduceSize;
+            if (this.transform.localScale.y < 0.2f)
+            {
+                Debug.Log("LOCALSCALE Y= " + transform.localScale.y);
+                isNULL = true;
+                AIPlayer.instance.NextTarget();
+            }           
+
+            if (logCreate == true)
+            {
+                DoAnimateWoods();
+            }
+        }
+    }
+
+
+    public void ReduceSizeForAI()
+    {
+        Vector3 reduceSize = new Vector3(0f, 0.1f, 0f);
+        if (this.transform.localScale.y >= 0f)
+        {
+            this.transform.localScale -= reduceSize;
+            if (this.transform.localScale.y < 0.2f)
+            {
+                Debug.Log("LOCALSCALE Y= " + transform.localScale.y);
+                isNULL = true;
+                AIPlayer.instance.NextTarget();
+            }
 
             if (logCreate == true)
             {
