@@ -74,7 +74,7 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
                 tempPos.y += height;
                 wood.transform.position = tempPos;
                 height += 0.9f;
-                Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
+                //Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
                 //GenerateFloatingPoint();
                 //DisableFloatingPoints();
             }
@@ -89,7 +89,7 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
                 temp.y += height2;
                 wood.transform.position = temp;
                 height2 += 0.8f;
-                Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
+                //Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
                 //GenerateFloatingPoint();
                 //DisableFloatingPoints();
             }
@@ -102,7 +102,7 @@ public class WoodCollecter : MonoBehaviour//IpooledObject
             UIManager.Instance.value += 1;
             UIManager.Instance.pb.BarValue += 0.5f;
             UIManager.Instance.IncreaseScore(1);
-            Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
+            //Instantiate(FloatingPoint, FlotObject.transform.position, Quaternion.identity);
             //GenerateFloatingPoint();
             //DisableFloatingPoints();
         }

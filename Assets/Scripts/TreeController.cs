@@ -48,17 +48,16 @@ public class TreeController : MonoBehaviour
         if (this.transform.localScale.y >= 0f)
         {
             this.transform.localScale -= reduceSize;
-            if (this.transform.localScale.y < 0.2f)
-            {
-                Debug.Log("LOCALSCALE Y= " + transform.localScale.y);
-                isNULL = true;
-                AIPlayer.instance.NextTarget();
-            }           
-
             if (logCreate == true)
             {
                 DoAnimateWoods();
             }
+        }
+        if (this.transform.localScale.y < 0.2f)
+        {
+            Debug.Log("LOCALSCALE Y= " + transform.localScale.y);
+            //isNULL = true;
+            //AIPlayer.instance.NextTarget();
         }
     }
 
@@ -66,21 +65,22 @@ public class TreeController : MonoBehaviour
     public void ReduceSizeForAI()
     {
         Vector3 reduceSize = new Vector3(0f, 0.1f, 0f);
+        //isNULL = false;
         if (this.transform.localScale.y >= 0f)
         {
             this.transform.localScale -= reduceSize;
-            if (this.transform.localScale.y < 0.2f)
+            if (logCreate == true)
+            {
+                DoAnimateWoods();
+            }
+            if (this.transform.localScale.y <= 0.2f)
             {
                 Debug.Log("LOCALSCALE Y= " + transform.localScale.y);
                 isNULL = true;
                 AIPlayer.instance.NextTarget();
             }
-
-            if (logCreate == true)
-            {
-                DoAnimateWoods();
-            }
         }
+
     }
 
     //animate woods using doTween
