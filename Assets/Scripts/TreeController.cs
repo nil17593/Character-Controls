@@ -81,6 +81,8 @@ public class TreeController : MonoBehaviour
                 Debug.Log("LOCALSCALE Y= " + transform.localScale.y);
                 isNULL = true;
                 AIPlayer.instance.NextTarget();
+                MonsterAIPlayer.instance.NextTargetForMonsterAI();
+                NormalAIPlayer.instance.NextTargetOfNormalAI();
             }
             else
             {

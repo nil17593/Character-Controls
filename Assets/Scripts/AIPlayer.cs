@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,14 +21,17 @@ namespace AI
         private Animator animator;
         public bool cutting = false;
         public bool running;
-        public float maxX, maxZ, minX, minZ;
+        //public float maxX, maxZ, minX, minZ;
         private BoxCollider ground;
         [SerializeField]
-        private TreeController [] targets;
-
+        private TreeController[] targets;
+        //[SerializeField]
+        //private List<TreeController> targets;
+        [SerializeField]
+        private AgentType agentType;
         [SerializeField]
         private GameObject woodSell;
-        public int i = 4;
+        public int i = 8;
         public bool reached = false;
         //private bool treecut;
 
@@ -47,10 +51,15 @@ namespace AI
             animator = GetComponent<Animator>();
             i = 0;
             targets = FindObjectsOfType<TreeController>();
-            transform.position = navMeshAgent.nextPosition;
+            if (targets == null)
+            {
+                return;
+            }
             navMeshAgent.SetDestination(targets[i].transform.position);
-            //navMeshAgent.destination = Random.Range(targets[i].transform.position);
-            //navMeshAgent.SetDestination(Random.Range(targets[i].transform.position,targets[i].transform.position);
+            //if (AIWoodCollecter.woods.Count == 14)
+            //{
+            //    navMeshAgent.SetDestination(woodSell.transform.position);
+            //}
         }
 
 
@@ -61,6 +70,17 @@ namespace AI
             //    navMeshAgent.SetDestination(woodSell.transform.position);
             //}
             MovingTowardsTarget();
+            if (AIWoodCollecter.woods.Count >= 15)
+            {
+                navMeshAgent.ResetPath();
+                reached = false;
+                running = true;
+                cutting = false;
+                navMeshAgent.isStopped = false;
+                navMeshAgent.acceleration = 50f;
+                navMeshAgent.SetDestination(woodSell.transform.position);
+                animator.SetBool("AIRunning", true);
+            }
         }
 
         void MovingTowardsTarget()
@@ -79,7 +99,7 @@ namespace AI
         public void NextTarget()
         {
             navMeshAgent.ResetPath();
-            if (i<3)
+            if (i<7)
             i += 1;
             //treeController.isNULL = false;
             reached = false;
@@ -124,6 +144,14 @@ namespace AI
                 CuttingTree();
                 //StartCoroutine(DestroyTargetTree());
             }
+            if (other.gameObject.GetComponent<WoodSelling>() != null)
+            {
+                Debug.Log("NAME " + other.gameObject.name);
+                navMeshAgent.isStopped = true;
+                AIWoodCollecter.Instance.SellWood();
+                BuyWood.count = 0;
+                NextTarget();
+            }
         }
 
 
@@ -141,6 +169,10 @@ namespace AI
                 running = true;
                 animator.SetBool("AICutting", false);
             }
+            //if (other.gameObject.GetComponent<WoodSelling>() != null)
+            //{
+            //    navMeshAgent.SetDestination(targets[i].transform.position);
+            //}
         }
 
 

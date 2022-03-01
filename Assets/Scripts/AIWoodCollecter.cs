@@ -89,14 +89,7 @@ namespace AI
             //{
             //    RemoveList();
             //}
-            if (woodList.Count > 0)
-            {
-                RemoveList();
-            }
-            else
-            {
-                return;
-            }
+            StartCoroutine(DoAnimateWoods());
         }
 
         private void RemoveList()
