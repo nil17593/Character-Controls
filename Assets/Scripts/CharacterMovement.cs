@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using UnityEngine;
 
@@ -52,9 +53,11 @@ public class CharacterMovement : MonoBehaviour
     public bool cutting = false;
     #endregion
 
+    public static CharacterMovement instance;
 
     void Start()
     {
+        instance = this;
         rb = GetComponent<Rigidbody>();        
         animator = GetComponent<Animator>();
         fixedJoystick = GameObject.FindGameObjectWithTag("Joystick").GetComponent<FixedJoystick>();
@@ -128,6 +131,11 @@ public class CharacterMovement : MonoBehaviour
         }
     } 
 
+    public void LookTarget(GameObject target)
+    {
+        transform.LookAt(target.transform.position + new Vector3(0f,-2f,0f));
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -150,17 +158,22 @@ public class CharacterMovement : MonoBehaviour
 
 
     //player will do cutting animation 
-    void OnCollisionStay(Collision collision)
+    //void OnCollisionStay(Collision collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Tree"))
+    //    {
+    //        cutting = true;
+    //        Attack();
+    //    }
+    //}
+
+    public void StartCutting()
     {
-        if (collision.gameObject.CompareTag("Tree"))
-        {
-            cutting = true;
-            Attack();
-        }
+        cutting = true;
+        Attack();
     }
 
-    //player stops cutting animation
-    private void OnCollisionExit(Collision other)
+    public void StopCutting()
     {
         cutting = false;
         animator.SetBool("Attack", false);
@@ -176,6 +189,26 @@ public class CharacterMovement : MonoBehaviour
             animator.SetBool("Running", false);
         }
     }
+
+    
+
+    //player stops cutting animation
+    //private void OnCollisionExit(Collision other)
+    //{
+    //    cutting = false;
+    //    animator.SetBool("Attack", false);
+
+    //    if (fixedJoystick.Horizontal != 0f || fixedJoystick.Vertical != 0f)
+    //    {
+    //        animator.SetBool("Idle", false);
+    //        animator.SetBool("Running", true);
+    //    }
+    //    else
+    //    {
+    //        animator.SetBool("Idle", true);
+    //        animator.SetBool("Running", false);
+    //    }
+    //}
 
     //coroutine for the unlocking land
     IEnumerator UnlockLand()

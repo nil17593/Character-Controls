@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using AI;
 
 public class WoodSelling : MonoBehaviour
 {
     public bool isPlayercolliding = false;
+    public bool isAIPlayercolliding = false;
+
     private float timer = 1f;
-
-
 
     private void Update()
     {
@@ -29,11 +28,29 @@ public class WoodSelling : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.GetComponent<AIPlayer>() != null)
+        {
+            isAIPlayercolliding = true;
+        }
+    }
+
     private void OnCollisionStay(Collision other)
     {
         if (other.gameObject.GetComponent<CharacterMovement>() != null && isPlayercolliding)
         {
             WoodCollecter.Instance.SellWood();
+            BuyWood.count = 0;
+        }
+       
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.GetComponent<AIPlayer>() != null && isAIPlayercolliding)
+        {
+            AIWoodCollecter.Instance.SellWood();
             BuyWood.count = 0;
         }
     }
@@ -42,5 +59,11 @@ public class WoodSelling : MonoBehaviour
     {
         isPlayercolliding = false;
         StopCoroutine(WoodCollecter.Instance.DoAnimateWoods());
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        isAIPlayercolliding = false;
+        StopCoroutine(AIWoodCollecter.Instance.DoAnimateWoods());
     }
 }

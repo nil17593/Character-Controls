@@ -21,15 +21,18 @@ public class TreeController : MonoBehaviour
     public bool isNULL = false;
     public static bool isCollectedBYAI=false;
     //private bool isCollectedByPlayer=false;
-    //private static TreeController instance;
+    public static TreeController instance;
+    internal readonly float maxX;
+
     //public static TreeController Instance { get { return instance; } }
- 
+
 
     private void Start()
     {
         isNULL = false;
         
-        //instance = this;
+        instance = this;
+        Physics.IgnoreLayerCollision(0,3);
     }
 
 
@@ -79,8 +82,17 @@ public class TreeController : MonoBehaviour
                 isNULL = true;
                 AIPlayer.instance.NextTarget();
             }
+            else
+            {
+                isNULL = false;
+            }
         }
 
+    }
+
+    public void DestroyTree(TreeController tree)
+    {
+        Destroy(tree.gameObject);
     }
 
     //animate woods using doTween

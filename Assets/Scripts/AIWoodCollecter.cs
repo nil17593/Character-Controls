@@ -22,7 +22,7 @@ namespace AI
         private float height = 0f;
         private float height2 = 0f;
         private GameObject wood;
-        private List<GameObject> woods;
+        public static List<GameObject> woods;
         private int count2;
         private Vector3 tempPos;
         private Vector3 temp;
@@ -37,17 +37,12 @@ namespace AI
         [SerializeField]
         private GameObject WoodInstantiateArea2;
 
-        //[Header("UI- Floating Point")]
-        //[SerializeField]
-        //private GameObject FloatingPoint;
-        //[SerializeField]
-        //private Transform FlotObject;
-
-        //public Transform woodCollectionArea;
+        public Transform woodCollectionArea;
 
 
         private static AIWoodCollecter instance;
         public static AIWoodCollecter Instance { get { return instance; } }//public instance to share
+
         void Start()
         {
             instance = this;
@@ -58,7 +53,7 @@ namespace AI
         //wood collection by player 
         public void WoodCollection()
         {
-            if (AIAxeController.aiAXE==true && woods.Count <= 15)
+            if (AIAxeController.aiAXE == true && woods.Count <= 15)
             {
                 wood = Instantiate(WoodPrefab) as GameObject;
                 woods.Add(wood.gameObject);
@@ -87,72 +82,73 @@ namespace AI
         }
 
 
-        //public void SellWood()
-        //{
-        //    //if (woods.Count>0 || woodList.Count > 0 && woodSelling.isPlayercolliding)
-        //    //{
-        //    //    RemoveList();
-        //    //}
-        //    if (woodList.Count > 0)
-        //    {
-        //        RemoveList();
-        //    }
-        //    else
-        //    {
-        //        return;
-        //    }
-        //}
 
-        //private void RemoveList()
-        //{
-        //    woodList.RemoveAt(woodList.Count - 1);
-        //    Debug.Log("WoodCount " + woodCount);
-        //    UIManager.Instance.DecreaseScore(1);
-        //    UIManager.Instance.IncreaseCoins(1);
-        //    if (woodList.Count == 0)
-        //    {
-        //        StartCoroutine(DoAnimateWoods());
-        //    }
-        //}
+        public void SellWood()
+        {
+            //if (woods.Count>0 || woodList.Count > 0 && woodSelling.isPlayercolliding)
+            //{
+            //    RemoveList();
+            //}
+            if (woodList.Count > 0)
+            {
+                RemoveList();
+            }
+            else
+            {
+                return;
+            }
+        }
 
-
-        //public IEnumerator DoAnimateWoods()
-        //{
-        //    for (int i = woods.Count - 1; i >= 0; i--)
-        //    {
-        //        Debug.Log("i =" + i);
-        //        //if(woodSelling.isPlayercolliding)
-        //        //{
-        //        yield return new WaitForSeconds(0.1f);
-        //        woods[i].gameObject.transform.DOMove(woodCollectionArea.transform.position, 0.8f).SetEase(Ease.OutCubic).OnComplete(() =>
-        //        {
-        //            RemoveWoods();
-        //        });
-        //        //}
-        //        //else
-        //        //{
-        //        //    yield return null;
-        //        //}
-        //    }
-        //}
+        private void RemoveList()
+        {
+            woodList.RemoveAt(woodList.Count - 1);
+            //Debug.Log("WoodCount " + woodCount);
+            UIManager.Instance.DecreaseScore(1);
+            UIManager.Instance.IncreaseCoins(1);
+            if (woodList.Count == 0)
+            {
+                StartCoroutine(DoAnimateWoods());
+            }
+        }
 
 
-        //void RemoveWoods()
-        //{
-        //    if (woods.Count > 0)
-        //    {
-        //        woods[woods.Count - 1].gameObject.SetActive(false);
-        //        if (woods.Count <= 8)
-        //        {
-        //            height -= 0.9f;
-        //        }
-        //        if (woods.Count > 8)
-        //        {
-        //            height2 -= 0.8f;
-        //        }
-        //        woods.RemoveAt(woods.Count - 1);
-        //    }
-        //    Debug.Log("REMOVELIST FUNCTION  " + woodCount);
-        //}
+        public IEnumerator DoAnimateWoods()
+        {
+            for (int i = woods.Count - 1; i >= 0; i--)
+            {
+                Debug.Log("i =" + i);
+                //if(woodSelling.isPlayercolliding)
+                //{
+                yield return new WaitForSeconds(0.1f);
+                woods[i].gameObject.transform.DOMove(woodCollectionArea.transform.position, 0.8f).SetEase(Ease.OutCubic).OnComplete(() =>
+                {
+                    RemoveWoods();
+                });
+                //}
+                //else
+                //{
+                //    yield return null;
+                //}
+            }
+        }
+
+
+        void RemoveWoods()
+        {
+            if (woods.Count > 0)
+            {
+                woods[woods.Count - 1].gameObject.SetActive(false);
+                if (woods.Count <= 8)
+                {
+                    height -= 0.9f;
+                }
+                if (woods.Count > 8)
+                {
+                    height2 -= 0.8f;
+                }
+                woods.RemoveAt(woods.Count - 1);
+            }
+            //Debug.Log("REMOVELIST FUNCTION  " + woodCount);
+        }
     }
 }

@@ -1,50 +1,72 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace AI
 {
+    public enum AgentType
+    {
+        Tiny,
+        Normal,
+        Monster
+    }
     public class AIPlayer : MonoBehaviour
     {
         [Header("AI Player Components")]
         [SerializeField]
         private NavMeshAgent navMeshAgent;
-        [SerializeField]
         private TreeController treeController;
         private Rigidbody Rigidbody;
         private Animator animator;
         public bool cutting = false;
         public bool running;
+        public float maxX, maxZ, minX, minZ;
+        private BoxCollider ground;
         [SerializeField]
-        private GameObject[] targets;
+        private TreeController [] targets;
+
+        [SerializeField]
+        private GameObject woodSell;
         public int i = 4;
         public bool reached = false;
-        //private float timer = 15f;
-        //private Rigidbody rb;
+        //private bool treecut;
 
         public static AIPlayer instance;
+
+
+        
 
         private void Awake()
         {
             instance = this;
         }
+
         void Start()
         {
             navMeshAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
-            i = 0;          
+            i = 0;
+            targets = FindObjectsOfType<TreeController>();
             transform.position = navMeshAgent.nextPosition;
-            navMeshAgent.SetDestination(targets[i].transform.position);            
+            navMeshAgent.SetDestination(targets[i].transform.position);
+            //navMeshAgent.destination = Random.Range(targets[i].transform.position);
+            //navMeshAgent.SetDestination(Random.Range(targets[i].transform.position,targets[i].transform.position);
         }
+
 
         private void Update()
         {
+            //if (AIWoodCollecter.woods.Count >= 10)
+            //{
+            //    navMeshAgent.SetDestination(woodSell.transform.position);
+            //}
             MovingTowardsTarget();
         }
 
         void MovingTowardsTarget()
         {
             if (!reached)
-            {
+            {                
                 running = true;
                 cutting = false;
                 navMeshAgent.isStopped = false;
@@ -56,13 +78,15 @@ namespace AI
 
         public void NextTarget()
         {
-            if(i<4)
+            navMeshAgent.ResetPath();
+            if (i<3)
             i += 1;
-            treeController.isNULL = false;
+            //treeController.isNULL = false;
             reached = false;
             running = true;
             cutting = false;
             navMeshAgent.isStopped = false;
+            navMeshAgent.acceleration = 50f;
             navMeshAgent.SetDestination(targets[i].transform.position);
             animator.SetBool("AIRunning", true);
         }
@@ -90,6 +114,7 @@ namespace AI
             if (other.gameObject.CompareTag("Tree"))
             {
                 navMeshAgent.isStopped = true;
+                //navMeshAgent.velocity=Vector3.zero;
                 Debug.Log(other.gameObject.name);
                 cutting = true;
                 reached = true;
@@ -97,9 +122,16 @@ namespace AI
                 transform.LookAt(targets[i].transform.position);
                 Debug.Log("NAV Trigger= " + navMeshAgent.isStopped);
                 CuttingTree();
+                //StartCoroutine(DestroyTargetTree());
             }
         }
 
+
+        IEnumerator DestroyTargetTree()
+        {
+            yield return new WaitForSeconds(15f);
+            TreeController.instance.DestroyTree(gameObject.GetComponent<TreeController>());
+        }
 
         private void OnTriggerExit(Collider other)
         {
@@ -111,6 +143,13 @@ namespace AI
             }
         }
 
+
+        public void TurnOffOnTriggerExit()
+        {
+            cutting = false;
+            running = true;
+            animator.SetBool("AICutting", false);
+        }
 
 
         void GotoNextPoint()
